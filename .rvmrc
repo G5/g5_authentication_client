@@ -1,1 +1,1 @@
-rvm --create use 1.8.7@g5_authentication_client
+rvm --create use 1.9.3-p385@g5_authentication_client

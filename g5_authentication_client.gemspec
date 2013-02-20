@@ -20,12 +20,12 @@ Gem::Specification.new do |s|
   s.add_dependency('modelish', '>=0.1.2')
   s.add_dependency('configlet', '~>2.1')
 
-  s.add_development_dependency('rspec', '~>2.6')
-  s.add_development_dependency('webmock', '~>1.7')
-  s.add_development_dependency('fakefs', '~>0.4')
+  s.add_development_dependency('rspec')
+  s.add_development_dependency('webmock')
+  s.add_development_dependency('fakefs')
 
-  s.add_development_dependency('yard', '~>0.7')
-  s.add_development_dependency('rdiscount', '~>1.6')
+  s.add_development_dependency('yard')
+  s.add_development_dependency('rdiscount')
 
   # specify dependencies here, for example:
   # s.add_development_dependency "cucumber"
