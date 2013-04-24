@@ -4,11 +4,11 @@ require "g5_authentication_client/version"
 Gem::Specification.new do |s|
   s.name        = "g5_authentication_client"
   s.version     = G5AuthenticationClient::VERSION
-  s.authors     = ["maeve"]
-  s.email       = ["maeve.revels@g5platform.com"]
-  s.homepage    = ""
-  s.summary     = %q{TODO: Write a gem summary}
-  s.description = %q{TODO: Write a gem description}
+  s.authors     = ["g5"]
+  s.email       = ["engineering@g5searchmarketing.com"]
+  s.homepage    = "http://getg5.com"
+  s.summary     = %q{client for g5 OAuth provider}
+  s.description = %q{client for g5 OAuth provider}
 
   s.rubyforge_project = "g5_authentication_client"
 
@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency('modelish', '>=0.1.2')
   s.add_dependency('configlet', '~>2.1')
 
+  s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
   s.add_development_dependency('webmock')
   s.add_development_dependency('fakefs')
