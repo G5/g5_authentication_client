@@ -9,11 +9,24 @@ describe G5AuthenticationClient::Client do
 
   let(:debug) { true }
   let(:logger) { mock() }
+  let(:username) {'username'}
+  let(:password) {'password'}
+  let(:client_id) {'client id'}
+  let(:client_secret) {'client secret'}
+  let(:client_callback_url) {'/stuff'}
+  let(:endpoint){ 'http://endpoint.com' }
+
 
   let(:options) do
     {
      :debug => debug,
-     :logger => logger
+     :logger => logger,
+     :endpoint => endpoint,
+     :username => username,
+     :password => password,
+     :client_id => client_id,
+     :client_secret => client_secret,
+     :client_callback_url => client_callback_url
     }
   end
 
@@ -22,6 +35,13 @@ describe G5AuthenticationClient::Client do
 
     it { should_not be_debug }
     its(:logger) { should be_an_instance_of(Logger) }
+    its(:username) { should be_nil }
+    its(:password) { should be_nil }
+    its(:client_id) { should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
+    its(:client_secret) { should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
+    its(:client_callback_url) { should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
+    its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
+
 
     # TODO: test for config options with default values. For example,
     # its(:required_setting) { should == G5AuthenticationClient::DEFAULT_REQUIRED_SETTING }
@@ -98,16 +118,29 @@ describe G5AuthenticationClient::Client do
       end
     end
 
-    # TODO: test for all config options. For example,
-    # its(:setting) { should == 'value' }
+    its(:username) { should == username }
 
-    # TODO: test writers for config options. For example,
-    # describe "#my_setting" do
-    #   subject { client.my_setting = new_val }
-    #   let(:new_val) { 'new value' }
-    #   it 'should change the value of my_setting' do
-    #     expect { subject }.to change { client.my_setting }.from(nil).to(new_val)
-    #   end
-    # end
+    it_should_behave_like 'a module configured attribute',:username, nil
+
+    its(:password) { should == password }
+
+    it_should_behave_like 'a module configured attribute', :password, nil
+
+    its(:endpoint){ should == endpoint}
+
+    it_should_behave_like 'a module configured attribute', :endpoint,G5AuthenticationClient::DEFAULT_ENDPOINT
+
+    its(:client_id) { should == client_id}
+
+    it_should_behave_like 'a module configured attribute', :client_id, G5AuthenticationClient::DEFAULT_CLIENT_ID
+
+    its(:client_secret) {should ==client_secret}
+
+    it_should_behave_like 'a module configured attribute', :client_secret, G5AuthenticationClient::DEFAULT_CLIENT_SECRET
+
+    its(:client_callback_url) {should ==client_callback_url}
+
+    it_should_behave_like 'a module configured attribute', :client_callback_url, G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL
+
   end
 end
