@@ -16,14 +16,13 @@ describe G5AuthenticationClient::Configuration do
   let(:client_secret) {'client secret'}
   let(:client_callback_url) {'/stuff'}
   let(:endpoint){ 'http://endpoint.com' }
-
+  let(:authorization_code){ 'code' }
 
   after { test_module.reset }
 
   it { should respond_to(:configure) }
 
   context 'with default configuration' do
-
     it { should_not be_debug }
     its(:logger) { should be_an_instance_of(Logger) }
     its(:username) {should be_nil}
@@ -32,9 +31,7 @@ describe G5AuthenticationClient::Configuration do
     its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
     its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
     its(:endpoint){should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-
-    # TODO: test config options with defaults here, for example:
-    # its(:special_prop) { should == G5AuthenticationClient::DEFAULT_SPECIAL_PROP }
+    its(:authorization_code){ should be_nil }
   end
 
   describe '.configure' do
@@ -43,7 +40,6 @@ describe G5AuthenticationClient::Configuration do
     context 'with full configuration' do
       let(:config_block) do
         lambda do |config|
-
           config.debug = true
           config.logger = logger
           config.username = username
@@ -52,13 +48,11 @@ describe G5AuthenticationClient::Configuration do
           config.client_secret = client_secret
           config.client_callback_url = client_callback_url
           config.endpoint = endpoint
-          # TODO: add config options here, for example:
-          # config.my_setting = 'value'
+          config.authorization_code = authorization_code
         end
       end
 
       it { should == test_module }
-
       it { should be_debug }
       its(:logger) { should == logger }
       its(:username){ should == username }
@@ -67,6 +61,7 @@ describe G5AuthenticationClient::Configuration do
       its(:client_secret){ should == client_secret }
       its(:client_callback_url){ should == client_callback_url}
       its(:endpoint){ should == endpoint}
+      its(:authorization_code){ should == authorization_code}
     end
 
     context 'with partial configuration' do
@@ -75,8 +70,6 @@ describe G5AuthenticationClient::Configuration do
           config.debug = true
           config.username = 'foo'
           config.password = 'bar'
-          # TODO: add config options here, for example:
-          # config.my_required_setting = 'value'
         end
       end
 
@@ -90,7 +83,7 @@ describe G5AuthenticationClient::Configuration do
       its(:client_secret){ should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
       its(:client_callback_url){ should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
       its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-
+      its(:authorization_code){ should be_nil}
     end
   end
 
@@ -107,48 +100,21 @@ describe G5AuthenticationClient::Configuration do
         config.client_id = 'blah'
         config.client_secret = 'blah'
         config.client_callback_url = 'blah'
-
-        # TODO: configure the module, for example
-        # config.my_option = true
+        config.authorization_code = 'blah'
       end
     end
 
-    subject { test_module.reset }
+    subject { test_module.reset;test_module }
 
-    it "should ret the username" do
-      expect{subject}.to change { test_module.username }.to(nil)
-    end
+    its(:username) {should be_nil}
+    its(:password) {should be_nil}
+    its(:endpoint) {should == G5AuthenticationClient::DEFAULT_ENDPOINT}
+    its(:client_id) {should == G5AuthenticationClient::DEFAULT_CLIENT_ID}
+    its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
+    its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
+    its(:debug?){ should be_false }
+    its(:logger){ should be_instance_of(Logger) }
 
-    it "should reset the password" do
-      expect{subject}.to change { test_module.password}.to(nil)
-    end
-
-    it "should reset the endpoint" do
-      expect{subject}.to change { test_module.endpoint}.to(G5AuthenticationClient::DEFAULT_ENDPOINT)
-    end
-
-    it "should reset the client_id" do
-      expect{subject}.to change { test_module.client_id}.to(G5AuthenticationClient::DEFAULT_CLIENT_ID)
-    end
-
-    it "should reset the client_secret" do
-      expect{subject}.to change { test_module.client_secret}.to(G5AuthenticationClient::DEFAULT_CLIENT_SECRET)
-    end
-
-    it "should reset the client_callback_url" do
-      expect{subject}.to change { test_module.client_callback_url}.to(G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL)
-    end
-
-    it 'should change the debug flag to the default value' do
-      expect { subject }.to change { test_module.debug? }.to(false)
-    end
-
-    it 'should change the logger to the default value' do
-      expect { subject }.to change { test_module.logger }
-      test_module.logger.should be_an_instance_of(Logger)
-    end
-
-    # TODO: assert that all configuration options have been reset
   end
 
   describe '.options' do
@@ -162,9 +128,7 @@ describe G5AuthenticationClient::Configuration do
         config.client_id = client_id
         config.client_secret = client_secret
         config.client_callback_url = client_callback_url
-
-        # TODO: configure the module, for example
-        # config.my_option = true
+        config.authorization_code = authorization_code
       end
     end
 
@@ -178,5 +142,6 @@ describe G5AuthenticationClient::Configuration do
     its([:client_id]) { should == client_id }
     its([:client_secret]) { should == client_secret }
     its([:client_callback_url]) { should == client_callback_url}
+    its([:authorization_code]){ should == authorization_code }
   end
 end

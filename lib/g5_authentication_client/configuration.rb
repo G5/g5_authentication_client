@@ -3,7 +3,7 @@ require 'logger'
 
 module G5AuthenticationClient
   # All valid configurations options
-  VALID_CONFIG_OPTIONS = [:debug, :logger, :username, :password, :client_id, :client_secret, :client_callback_url, :endpoint]
+  VALID_CONFIG_OPTIONS = [:debug, :logger, :username, :password, :client_id, :client_secret, :client_callback_url, :endpoint, :authorization_code]
 
   DEFAULT_ENDPOINT = "http://auth.g5search.com"
   DEFAULT_CLIENT_ID = "theid"
@@ -24,6 +24,7 @@ module G5AuthenticationClient
         default :client_id => DEFAULT_CLIENT_ID
         default :client_secret => DEFAULT_CLIENT_SECRET
         default :client_callback_url => DEFAULT_CLIENT_CALLBACK_URL
+        default :authorization_code => nil
       end
     end
 
@@ -58,6 +59,9 @@ module G5AuthenticationClient
 
     # !@attribute [rw] client_callback_url
     #   @return [String] the client callback url for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_CALLBACK_URL)
+
+    # !@attribute [rw] authorization_code
+    #   @return [String] the authorization code provided by the authorization server for authentication
 
     # @return [true,false] true if debug logging is enabled; false otherwie.
     def debug?
@@ -116,7 +120,8 @@ module G5AuthenticationClient
     # @see VALID_CONFIG_OPTIONS
 
     def reset
-      VALID_CONFIG_OPTIONS.each { |opt| self.send("#{opt}=", nil) } 
+      VALID_CONFIG_OPTIONS.each { |opt| self.send("#{opt}=", nil) }
+      self
     end
   end
 end
