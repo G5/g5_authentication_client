@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'json'
 
 describe G5AuthenticationClient::Client do
   subject { client }
@@ -9,23 +10,77 @@ describe G5AuthenticationClient::Client do
 
   let(:debug) { true }
   let(:logger) { mock() }
+  let(:username) {'username'}
+  let(:password) {'password'}
+  let(:client_id) {'client id'}
+  let(:client_secret) {'client secret'}
+  let(:client_callback_url) {'/stuff'}
+  let(:endpoint){ 'http://endpoint.com' }
+  let(:authorization_code){ 'code' }
+
 
   let(:options) do
     {
      :debug => debug,
-     :logger => logger
+     :logger => logger,
+     :endpoint => endpoint,
+     :username => username,
+     :password => password,
+     :client_id => client_id,
+     :client_secret => client_secret,
+     :client_callback_url => client_callback_url,
+     :authorization_code => authorization_code
     }
   end
+
+  let(:access_token_value){'token'}
+  let(:token_type){'Bearer'}
+
+  let(:access_token) do
+    {
+      "access_token" => access_token_value,
+      "token_type" => token_type,
+      "expires_in" => 7200,
+      "refresh_token" => "refresh_token"
+    }
+  end
+
+  let(:auth_header_value){"#{token_type} #{access_token_value}"}
+
+  let(:token_request) do
+    {
+      "client_id" => client_id,
+      "client_secret" => client_secret,
+      "code" => authorization_code,
+      "grant_type" => "authorization_code",
+      "redirect_uri" => client_callback_url
+    }
+  end
+
+  let(:new_user_options) do
+    {:email=>email,
+    :password=>password,
+    :id=>user_id}
+  end
+
+  let(:email){'foo@blah.com'}
+  let(:password){'mybigtestpasswored'}
+
+  let(:user_id){1}
+  let(:returned_user){{:id=>user_id,:email=>email}}
 
   context 'with default configuration' do
     let(:client) { G5AuthenticationClient::Client.new }
 
     it { should_not be_debug }
     its(:logger) { should be_an_instance_of(Logger) }
-
-    # TODO: test for config options with default values. For example,
-    # its(:required_setting) { should == G5AuthenticationClient::DEFAULT_REQUIRED_SETTING }
-    # its(:optional_setting) { should be_nil }
+    its(:username) { should be_nil }
+    its(:password) { should be_nil }
+    its(:client_id) { should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
+    its(:client_secret) { should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
+    its(:client_callback_url) { should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
+    its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
+    its(:authorization_code){ should be_nil}
 
   end
 
@@ -33,7 +88,6 @@ describe G5AuthenticationClient::Client do
 
     it { should be_debug }
     its(:logger) { should == logger }
-
 
     describe '#debug=' do
       subject { client.debug = new_debug }
@@ -98,16 +152,95 @@ describe G5AuthenticationClient::Client do
       end
     end
 
-    # TODO: test for all config options. For example,
-    # its(:setting) { should == 'value' }
+    its(:username) { should == username }
 
-    # TODO: test writers for config options. For example,
-    # describe "#my_setting" do
-    #   subject { client.my_setting = new_val }
-    #   let(:new_val) { 'new value' }
-    #   it 'should change the value of my_setting' do
-    #     expect { subject }.to change { client.my_setting }.from(nil).to(new_val)
-    #   end
-    # end
+    it_should_behave_like 'a module configured attribute',:username, nil
+
+    its(:password) { should == password }
+
+    it_should_behave_like 'a module configured attribute', :password, nil
+
+    its(:endpoint){ should == endpoint}
+
+    it_should_behave_like 'a module configured attribute', :endpoint,G5AuthenticationClient::DEFAULT_ENDPOINT
+
+    its(:client_id) { should == client_id}
+
+    it_should_behave_like 'a module configured attribute', :client_id, G5AuthenticationClient::DEFAULT_CLIENT_ID
+
+    its(:client_secret) {should ==client_secret}
+
+    it_should_behave_like 'a module configured attribute', :client_secret, G5AuthenticationClient::DEFAULT_CLIENT_SECRET
+
+    its(:client_callback_url) {should ==client_callback_url}
+
+    it_should_behave_like 'a module configured attribute', :client_callback_url, G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL
+
+    its(:authorization_code) { should == authorization_code}
+    it_should_behave_like 'a module configured attribute', :authorization_code, nil
+  end
+
+  context '#create_user' do
+    subject{client.create_user(new_user_options)}
+
+    before do
+      stub_request(:post, "#{endpoint}/oauth/token").
+        with(:body => token_request).
+        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+
+      stub_request(:post, /#{endpoint}\/v1\/users/).
+        with(:headers=>{'Authorization' => auth_header_value}).
+         to_return(:status => 200, :body => "", :headers => {})
+    end
+
+    it {should be_an_instance_of G5AuthenticationClient::User}
+  end
+
+  context '#update_user' do
+    subject{client.update_user(new_user_options)}
+
+    before do
+      stub_request(:post, "#{endpoint}/oauth/token").
+        with(:body => token_request).
+        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+
+      stub_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
+        with(:headers=>{'Authorization' => auth_header_value}).
+         to_return(:status => 200, :body => "", :headers => {})
+    end
+
+    it {should be_an_instance_of G5AuthenticationClient::User}
+
+  end
+
+  context '#get_user' do
+    before do
+      stub_request(:post, "#{endpoint}/oauth/token").
+        with(:body => token_request).
+        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+
+      stub_request(:get, /#{endpoint}\/v1\/users\/#{user_id}/).
+        with(:headers=>{'Authorization' => auth_header_value}).
+         to_return(:status => 200, :body => returned_user.to_json, :headers => {})
+    end
+    subject{client.get_user(user_id)}
+    it {should be_an_instance_of G5AuthenticationClient::User}
+  end
+
+  context '#delete_user' do
+    before do
+      stub_request(:post, "#{endpoint}/oauth/token").
+        with(:body => token_request).
+        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+
+      stub_request(:delete, /#{endpoint}\/v1\/users\/#{user_id}/).
+        with(:headers=>{'Authorization' => auth_header_value}).
+         to_return(:status => 200, :body => returned_user.to_json, :headers => {})
+    end
+
+    subject{client.delete_user(user_id)}
+    let(:user_id){1}
+
+    it {should be_an_instance_of G5AuthenticationClient::User}
   end
 end
