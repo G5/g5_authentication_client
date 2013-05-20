@@ -1,36 +1,43 @@
 # G5 Authentication Client #
 
-A client library for the g5_authentication service.
+A client library for the g5-authentication service.
 
 ## Installation ##
+
 You will need the g5 private gem server at gemfury as a gem source.
 
-In Gemfile: gem 'g5_authentication_client'
+In Gemfile:
 
-Just rubygems:  gem install g5_authentication_client
+    gem 'g5_authentication_client'
+
+Just rubygems:
+
+    gem install g5_authentication_client
 
 ## Examples ##
 
-Assuming you have an account on g5_authentication already.  Register your client application and gather the client_id, client_secret, callback url, and generate an authorization code.
+Assuming you have an account on g5-authentication already. Register your client
+application and gather the client_id, client_secret, callback url, and generate
+an authorization code.
 
-G5AuthenticationClient.configure do |config|
-	config.client_id = "blah"
-	config.client_secret = "blah"
-	config.client_callback_uri = "blah"
-	config.endpoint = "blah"
-	config.authorization_code = "blah"
-end
+    G5AuthenticationClient.configure do |config|
+      config.client_id = "blah"
+      config.client_secret = "blah"
+      config.client_callback_url = "blah"
+      config.endpoint = "blah"
+      config.authorization_code = "blah"
+    end
 
-client=G5AuthenticationClient.new
+    client=G5AuthenticationClient::Client.new
 
-user=client.create_user({email: 'foo@bar.com', password: 'yadayada'})
+    user=client.create_user({email: 'foo@bar.com', password: 'yadayada'})
 
-user.email="something@else.com"
-client.update_user user.to_hash
+    user.email="something@else.com"
+    client.update_user user.to_hash
 
-client.get_user user.id
+    client.get_user user.id
 
-client.delete_user user.id
+    client.delete_user user.id
 
 ## Contributing
 

@@ -10,7 +10,7 @@ module G5AuthenticationClient
     end
 
     # @!attribute [rw] endpoint
-    #   @return [String] the RENTCafe service endpoint URL
+    #   @return [String] the g5-authentication service endpoint URL
 
     # @!attribute [rw] username
     #   @return [String] the username for authentication
@@ -33,7 +33,8 @@ module G5AuthenticationClient
     # @!attribute [rw] client_callback_url
     #   @return [String] callback url for application
 
-    # @!attribute [rw] authorization_code provided by authorization server for authentication.
+    # @!attribute [rw] authorization_code
+    #   @return [String] code provided by authorization server
 
     def debug?
       self.debug.to_s == 'true'
@@ -91,7 +92,7 @@ module G5AuthenticationClient
     end
 
     # Get a user
-    # @param [Integer] user id
+    # @param [Integer] id the user ID in the remote service
     # @return [G5AuthenticationClient::User]
     def get_user(id)
       response=access_token.get("/v1/users/#{id}")
@@ -99,7 +100,7 @@ module G5AuthenticationClient
     end
 
     # Delete a user
-    # @jparam [Integer] user id
+    # @param [Integer] id the user ID in the remote service
     # @return [G5AuthenticationClient::User]
     def delete_user(id)
       response=access_token.delete("/v1/users/#{id}")

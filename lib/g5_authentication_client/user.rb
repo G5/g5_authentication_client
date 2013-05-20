@@ -4,7 +4,7 @@ module G5AuthenticationClient
 
   #A G5 Authentication User
   class User < Modelish::Base
-    # @!attribute[rw] email
+    # @!attribute [rw] email
     #   @return [String]
     #   The user's email address.
     property :email, :type => String, :required => true
