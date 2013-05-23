@@ -3,18 +3,28 @@ require 'logger'
 
 module G5AuthenticationClient
   # All valid configurations options
-  VALID_CONFIG_OPTIONS = [:debug, :logger]
+  VALID_CONFIG_OPTIONS = [:debug, :logger, :username, :password, :client_id, :client_secret, :client_callback_url, :endpoint, :authorization_code]
+
+  DEFAULT_ENDPOINT = "http://auth.g5search.com"
+  DEFAULT_CLIENT_ID = "theid"
+  DEFAULT_CLIENT_SECRET = "thesecret"
+  DEFAULT_CLIENT_CALLBACK_URL = "theurl"
 
   module Configuration
     include Configlet
- 
+
     def self.extended(base)
       # Default configuration - happens whether or not .configure is called
       base.config :g5_authentication_client do
 
         default :debug => 'false'
-        # TODO - set default values here, for example:
-        # default :my_opt => 'default value'
+        default :username => nil
+        default :password => nil
+        default :endpoint => DEFAULT_ENDPOINT
+        default :client_id => DEFAULT_CLIENT_ID
+        default :client_secret => DEFAULT_CLIENT_SECRET
+        default :client_callback_url => DEFAULT_CLIENT_CALLBACK_URL
+        default :authorization_code => nil
       end
     end
 
@@ -29,9 +39,29 @@ module G5AuthenticationClient
       end
     end
 
+    # !@attribute [rw] debug
+    #   @return [String] set to true or 'true' to enable debug logging (defaults to false)
+    #
+    # !@attribute [rw] endpoint
+    #   @return [String] the service endpoint URL (Defaults to G5AuthenticationClient::DEFAULT_ENDPOINT)
 
-    # @attr [true,false,String] debug set to true or 'true' to enable debug logging (defaults to false)
-    # TODO: document additional configuration attributes if necessary
+    # !@attribute [rw] username
+    #   @return [String] the username for password credentials flow
+
+    # !@attribute [rw] password
+    #   @return [String] the password for password credentials flow
+
+    # !@attribute [rw] client_id
+    #   @return [String] the client id for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_ID)
+
+    # !@attribute [rw] client_secret
+    #   @return [String] the client secret for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_SECRET)
+
+    # !@attribute [rw] client_callback_url
+    #   @return [String] the client callback url for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_CALLBACK_URL)
+
+    # !@attribute [rw] authorization_code
+    #   @return [String] the authorization code provided by the authorization server for authentication
 
     # @return [true,false] true if debug logging is enabled; false otherwie.
     def debug?
@@ -90,7 +120,8 @@ module G5AuthenticationClient
     # @see VALID_CONFIG_OPTIONS
 
     def reset
-      VALID_CONFIG_OPTIONS.each { |opt| self.send("#{opt}=", nil) } 
+      VALID_CONFIG_OPTIONS.each { |opt| self.send("#{opt}=", nil) }
+      self
     end
   end
 end
