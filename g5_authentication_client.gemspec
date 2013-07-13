@@ -17,8 +17,8 @@ Gem::Specification.new do |s|
   
   s.require_paths = ["lib"]
 
-  s.add_dependency('modelish', '>=0.1.2')
-  s.add_dependency('configlet', '~>2.1')
+  s.add_dependency('modelish', '~> 0.3')
+  s.add_dependency('configlet', '~> 2.1')
   s.add_dependency('oauth2')
   s.add_dependency('vcr')
 
