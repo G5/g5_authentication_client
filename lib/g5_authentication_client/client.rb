@@ -117,7 +117,9 @@ module G5AuthenticationClient
     end
 
     def oauth_access_token
-      @oauth_access_token ||= if authorization_code
+      @oauth_access_token ||= if access_token
+        OAuth2::AccessToken.new(oauth_client, access_token)
+      elsif authorization_code
         oauth_client.auth_code.get_token(authorization_code,:redirect_uri=>client_callback_url)
       elsif username && password
         oauth_client.password.get_token(username,password)

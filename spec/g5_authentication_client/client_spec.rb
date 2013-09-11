@@ -29,43 +29,24 @@ describe G5AuthenticationClient::Client do
      :client_secret => client_secret,
      :client_callback_url => client_callback_url,
      :authorization_code => authorization_code,
-     :access_token => access_token_value
+     :access_token => access_token
     }
   end
 
-  let(:access_token_value){'token'}
-  let(:token_type){'Bearer'}
+  let(:access_token) { access_token_value }
+  let(:access_token_value) { 'test_token' }
+  let(:token_type) { 'Bearer' }
 
-  let(:oauth_access_token) do
-    {
-      "access_token" => access_token_value,
-      "token_type" => token_type,
-      "expires_in" => 7200,
-      "refresh_token" => "refresh_token"
-    }
-  end
-
-  let(:auth_header_value){"#{token_type} #{access_token_value}"}
-
-  let(:token_request) do
-    {
-      "client_id" => client_id,
-      "client_secret" => client_secret,
-      "code" => authorization_code,
-      "grant_type" => "authorization_code",
-      "redirect_uri" => client_callback_url
-    }
-  end
+  let(:auth_header_value) { "#{token_type} #{access_token_value}" }
 
   let(:new_user_options) do
     {:email=>email,
-    :password=>password,
+    :password=>"#{password}x",
     :id=>user_id}
   end
 
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
-
   let(:user_id){1}
   let(:returned_user){{:id=>user_id,:email=>email}}
 
@@ -85,7 +66,6 @@ describe G5AuthenticationClient::Client do
   end
 
   context 'with non-default configuration' do
-
     it { should be_debug }
     its(:logger) { should == logger }
 
@@ -184,66 +164,58 @@ describe G5AuthenticationClient::Client do
   end
 
   context '#create_user' do
-    subject{client.create_user(new_user_options)}
+    subject(:create_user) { client.create_user(new_user_options) }
 
     before do
-      stub_request(:post, "#{endpoint}/oauth/token").
-        with(:body => token_request).
-        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
-
       stub_request(:post, /#{endpoint}\/v1\/users/).
-        with(:headers=>{'Authorization' => auth_header_value}).
-         to_return(:status => 200, :body => "", :headers => {})
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_user.to_json,
+                  headers: {'Content-Type' => 'application/json'})
     end
 
-    it {should be_an_instance_of G5AuthenticationClient::User}
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
   context '#update_user' do
-    subject{client.update_user(new_user_options)}
+    subject(:update_user) { client.update_user(new_user_options) }
 
     before do
-      stub_request(:post, "#{endpoint}/oauth/token").
-        with(:body => token_request).
-        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
-
       stub_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
-        with(:headers=>{'Authorization' => auth_header_value}).
-         to_return(:status => 200, :body => "", :headers => {})
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_user.to_json,
+                  headers: {'Content-Type' => 'application/json'})
     end
 
-    it {should be_an_instance_of G5AuthenticationClient::User}
-
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
   context '#get_user' do
-    before do
-      stub_request(:post, "#{endpoint}/oauth/token").
-        with(:body => token_request).
-        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+    subject(:get_user) { client.get_user(user_id) }
 
+    before do
       stub_request(:get, /#{endpoint}\/v1\/users\/#{user_id}/).
-        with(:headers=>{'Authorization' => auth_header_value}).
-         to_return(:status => 200, :body => returned_user.to_json, :headers => {})
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_user.to_json,
+                  headers: {'Content-Type' => 'application/json'})
     end
-    subject{client.get_user(user_id)}
-    it {should be_an_instance_of G5AuthenticationClient::User}
+
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
   context '#delete_user' do
-    before do
-      stub_request(:post, "#{endpoint}/oauth/token").
-        with(:body => token_request).
-        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+    subject(:delete_user) { client.delete_user(user_id) }
 
+    before do
       stub_request(:delete, /#{endpoint}\/v1\/users\/#{user_id}/).
-        with(:headers=>{'Authorization' => auth_header_value}).
-         to_return(:status => 200, :body => returned_user.to_json, :headers => {})
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_user.to_json,
+                  headers: {'Content-Type' => 'application/json'})
     end
 
-    subject{client.delete_user(user_id)}
-    let(:user_id){1}
-
-    it {should be_an_instance_of G5AuthenticationClient::User}
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 end
