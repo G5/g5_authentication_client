@@ -17,6 +17,7 @@ describe G5AuthenticationClient::Configuration do
   let(:client_callback_url) {'/stuff'}
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
+  let(:access_token) { 'access_token_test' }
 
   after { test_module.reset }
 
@@ -32,6 +33,7 @@ describe G5AuthenticationClient::Configuration do
     its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
     its(:endpoint){should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil }
+    its(:access_token) { should be_nil }
   end
 
   describe '.configure' do
@@ -49,6 +51,7 @@ describe G5AuthenticationClient::Configuration do
           config.client_callback_url = client_callback_url
           config.endpoint = endpoint
           config.authorization_code = authorization_code
+          config.access_token = access_token
         end
       end
 
@@ -62,6 +65,7 @@ describe G5AuthenticationClient::Configuration do
       its(:client_callback_url){ should == client_callback_url}
       its(:endpoint){ should == endpoint}
       its(:authorization_code){ should == authorization_code}
+      its(:access_token) { should == access_token }
     end
 
     context 'with partial configuration' do
@@ -84,6 +88,7 @@ describe G5AuthenticationClient::Configuration do
       its(:client_callback_url){ should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
       its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
       its(:authorization_code){ should be_nil}
+      its(:access_token) { should be_nil }
     end
   end
 
@@ -101,6 +106,7 @@ describe G5AuthenticationClient::Configuration do
         config.client_secret = 'blah'
         config.client_callback_url = 'blah'
         config.authorization_code = 'blah'
+        config.access_token = 'blah'
       end
     end
 
@@ -114,7 +120,7 @@ describe G5AuthenticationClient::Configuration do
     its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
     its(:debug?){ should be_false }
     its(:logger){ should be_instance_of(Logger) }
-
+    its(:access_token) { should be_nil }
   end
 
   describe '.options' do
@@ -129,6 +135,7 @@ describe G5AuthenticationClient::Configuration do
         config.client_secret = client_secret
         config.client_callback_url = client_callback_url
         config.authorization_code = authorization_code
+        config.access_token = access_token
       end
     end
 
@@ -143,5 +150,6 @@ describe G5AuthenticationClient::Configuration do
     its([:client_secret]) { should == client_secret }
     its([:client_callback_url]) { should == client_callback_url}
     its([:authorization_code]){ should == authorization_code }
+    its([:access_token]) { should == access_token }
   end
 end

@@ -18,7 +18,6 @@ describe G5AuthenticationClient::Client do
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
 
-
   let(:options) do
     {
      :debug => debug,
@@ -29,14 +28,15 @@ describe G5AuthenticationClient::Client do
      :client_id => client_id,
      :client_secret => client_secret,
      :client_callback_url => client_callback_url,
-     :authorization_code => authorization_code
+     :authorization_code => authorization_code,
+     :access_token => access_token_value
     }
   end
 
   let(:access_token_value){'token'}
   let(:token_type){'Bearer'}
 
-  let(:access_token) do
+  let(:oauth_access_token) do
     {
       "access_token" => access_token_value,
       "token_type" => token_type,
@@ -81,7 +81,7 @@ describe G5AuthenticationClient::Client do
     its(:client_callback_url) { should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
     its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil}
-
+    its(:access_token) { should be_nil }
   end
 
   context 'with non-default configuration' do
@@ -178,6 +178,9 @@ describe G5AuthenticationClient::Client do
 
     its(:authorization_code) { should == authorization_code}
     it_should_behave_like 'a module configured attribute', :authorization_code, nil
+
+    its(:access_token) { should == access_token_value }
+    it_should_behave_like 'a module configured attribute', :access_token, nil
   end
 
   context '#create_user' do
@@ -186,7 +189,7 @@ describe G5AuthenticationClient::Client do
     before do
       stub_request(:post, "#{endpoint}/oauth/token").
         with(:body => token_request).
-        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
 
       stub_request(:post, /#{endpoint}\/v1\/users/).
         with(:headers=>{'Authorization' => auth_header_value}).
@@ -202,7 +205,7 @@ describe G5AuthenticationClient::Client do
     before do
       stub_request(:post, "#{endpoint}/oauth/token").
         with(:body => token_request).
-        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
 
       stub_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
         with(:headers=>{'Authorization' => auth_header_value}).
@@ -217,7 +220,7 @@ describe G5AuthenticationClient::Client do
     before do
       stub_request(:post, "#{endpoint}/oauth/token").
         with(:body => token_request).
-        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
 
       stub_request(:get, /#{endpoint}\/v1\/users\/#{user_id}/).
         with(:headers=>{'Authorization' => auth_header_value}).
@@ -231,7 +234,7 @@ describe G5AuthenticationClient::Client do
     before do
       stub_request(:post, "#{endpoint}/oauth/token").
         with(:body => token_request).
-        to_return(:status => 200, :body => access_token.to_json, :headers => {'Content-Type' => 'application/json'})
+        to_return(:status => 200, :body => oauth_access_token.to_json, :headers => {'Content-Type' => 'application/json'})
 
       stub_request(:delete, /#{endpoint}\/v1\/users\/#{user_id}/).
         with(:headers=>{'Authorization' => auth_header_value}).
