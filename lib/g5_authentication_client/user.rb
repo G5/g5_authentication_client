@@ -14,6 +14,11 @@ module G5AuthenticationClient
     #   The user's password.  Required to create a user.
     property :password, :type => String
 
+    # @!attribute [rw] password_confirmation
+    #   @return [String]
+    #   The user's password_confirmation.
+    property :password_confirmation, :type => String
+
     # @!attribute [rw] id
     #   @return [Integer]
     #   The user's id.  Not required to create a user.
