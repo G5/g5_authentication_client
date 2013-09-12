@@ -36,6 +36,9 @@ module G5AuthenticationClient
     # @!attribute [rw] authorization_code
     #   @return [String] code provided by authorization server
 
+    # @!attribute [rw] access_token
+    #   @return [String] access token value provided by authorization server
+
     def debug?
       self.debug.to_s == 'true'
     end
@@ -75,7 +78,7 @@ module G5AuthenticationClient
     def create_user(options={})
       user=User.new(options)
       user.validate_for_create!
-      response=access_token.post('/v1/users', :params=>{:user=>user.to_hash})
+      response=oauth_access_token.post('/v1/users', :params=>{:user=>user.to_hash})
       User.new(response.parsed)
     end
 
@@ -87,7 +90,7 @@ module G5AuthenticationClient
     def update_user(options={})
       user=User.new(options)
       user.validate!
-      response=access_token.put("/v1/users/#{user.id}", :params=>{:user=>user.to_hash})
+      response=oauth_access_token.put("/v1/users/#{user.id}", :params=>{:user=>user.to_hash})
       User.new(response.parsed)
     end
 
@@ -95,7 +98,7 @@ module G5AuthenticationClient
     # @param [Integer] id the user ID in the remote service
     # @return [G5AuthenticationClient::User]
     def get_user(id)
-      response=access_token.get("/v1/users/#{id}")
+      response=oauth_access_token.get("/v1/users/#{id}")
       User.new(response.parsed)
     end
 
@@ -103,7 +106,7 @@ module G5AuthenticationClient
     # @param [Integer] id the user ID in the remote service
     # @return [G5AuthenticationClient::User]
     def delete_user(id)
-      response=access_token.delete("/v1/users/#{id}")
+      response=oauth_access_token.delete("/v1/users/#{id}")
       User.new(response.parsed)
     end
 
@@ -113,8 +116,10 @@ module G5AuthenticationClient
       OAuth2::Client.new(client_id, client_secret, :site => endpoint)
     end
 
-    def access_token
-      @access_token ||= if authorization_code
+    def oauth_access_token
+      @oauth_access_token ||= if access_token
+        OAuth2::AccessToken.new(oauth_client, access_token)
+      elsif authorization_code
         oauth_client.auth_code.get_token(authorization_code,:redirect_uri=>client_callback_url)
       elsif username && password
         oauth_client.password.get_token(username,password)
