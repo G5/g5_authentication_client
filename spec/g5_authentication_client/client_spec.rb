@@ -163,7 +163,7 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'a module configured attribute', :access_token, nil
   end
 
-  context '#create_user' do
+  describe '#create_user' do
     subject(:create_user) { client.create_user(new_user_options) }
 
     before do
@@ -177,7 +177,7 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
-  context '#update_user' do
+  describe '#update_user' do
     subject(:update_user) { client.update_user(new_user_options) }
 
     before do
@@ -191,7 +191,7 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
-  context '#get_user' do
+  describe '#get_user' do
     subject(:get_user) { client.get_user(user_id) }
 
     before do
@@ -205,11 +205,25 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
-  context '#delete_user' do
+  describe '#delete_user' do
     subject(:delete_user) { client.delete_user(user_id) }
 
     before do
       stub_request(:delete, /#{endpoint}\/v1\/users\/#{user_id}/).
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_user.to_json,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+  end
+
+  describe '#me' do
+    subject(:me) { client.me }
+
+    before do
+      stub_request(:get, /#{endpoint}\/v1\/me/).
         with(headers: {'Authorization' => auth_header_value}).
         to_return(status: 200,
                   body: returned_user.to_json,
