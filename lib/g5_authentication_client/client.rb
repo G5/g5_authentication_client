@@ -110,8 +110,14 @@ module G5AuthenticationClient
       User.new(response.parsed)
     end
 
-    private
+    # Get the current user based on configured credentials
+    # @return [G5AuthenticationClient::User]
+    def me
+      response = oauth_access_token.get('/v1/me')
+      User.new(response.parsed)
+    end
 
+    private
     def oauth_client
       OAuth2::Client.new(client_id, client_secret, :site => endpoint)
     end
