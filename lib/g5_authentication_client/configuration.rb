@@ -4,13 +4,13 @@ require 'logger'
 module G5AuthenticationClient
   # All valid configurations options
   VALID_CONFIG_OPTIONS = [:debug, :logger, :username, :password, :client_id,
-                          :client_secret, :client_callback_url, :endpoint,
+                          :client_secret, :redirect_uri, :endpoint,
                           :authorization_code, :access_token]
 
   DEFAULT_ENDPOINT = "http://auth.g5search.com"
   DEFAULT_CLIENT_ID = "theid"
   DEFAULT_CLIENT_SECRET = "thesecret"
-  DEFAULT_CLIENT_CALLBACK_URL = "theurl"
+  DEFAULT_REDIRECT_URI = "theurl"
 
   module Configuration
     include Configlet
@@ -24,7 +24,7 @@ module G5AuthenticationClient
         default :endpoint => DEFAULT_ENDPOINT
         default :client_id => DEFAULT_CLIENT_ID
         default :client_secret => DEFAULT_CLIENT_SECRET
-        default :client_callback_url => DEFAULT_CLIENT_CALLBACK_URL
+        default :redirect_uri => DEFAULT_REDIRECT_URI
         default :authorization_code => nil
         default :access_token => nil
       end
@@ -59,8 +59,8 @@ module G5AuthenticationClient
     # !@attribute [rw] client_secret
     #   @return [String] the client secret for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_SECRET)
 
-    # !@attribute [rw] client_callback_url
-    #   @return [String] the client callback url for the client application (Defaults to G5Authentication::DEFAULT_CLIENT_CALLBACK_URL)
+    # !@attribute [rw] redirect_uri
+    #   @return [String] the redirect URI for the client application (Defaults to G5Authentication::DEFAULT_REDIRECT_URI)
 
     # !@attribute [rw] authorization_code
     #   @return [String] the authorization code provided by the authorization server for authentication

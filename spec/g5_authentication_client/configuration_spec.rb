@@ -14,7 +14,7 @@ describe G5AuthenticationClient::Configuration do
   let(:password) {'password'}
   let(:client_id) {'client id'}
   let(:client_secret) {'client secret'}
-  let(:client_callback_url) {'/stuff'}
+  let(:redirect_uri) {'/stuff'}
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
   let(:access_token) { 'access_token_test' }
@@ -30,7 +30,7 @@ describe G5AuthenticationClient::Configuration do
     its(:password) {should be_nil}
     its(:client_id) {should == G5AuthenticationClient::DEFAULT_CLIENT_ID}
     its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
-    its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
+    its(:redirect_uri) {should == G5AuthenticationClient::DEFAULT_REDIRECT_URI}
     its(:endpoint){should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil }
     its(:access_token) { should be_nil }
@@ -48,7 +48,7 @@ describe G5AuthenticationClient::Configuration do
           config.password = password
           config.client_id = client_id
           config.client_secret = client_secret
-          config.client_callback_url = client_callback_url
+          config.redirect_uri = redirect_uri
           config.endpoint = endpoint
           config.authorization_code = authorization_code
           config.access_token = access_token
@@ -62,7 +62,7 @@ describe G5AuthenticationClient::Configuration do
       its(:password){ should == password }
       its(:client_id){ should == client_id }
       its(:client_secret){ should == client_secret }
-      its(:client_callback_url){ should == client_callback_url}
+      its(:redirect_uri){ should == redirect_uri}
       its(:endpoint){ should == endpoint}
       its(:authorization_code){ should == authorization_code}
       its(:access_token) { should == access_token }
@@ -85,7 +85,7 @@ describe G5AuthenticationClient::Configuration do
       its(:password) { should == 'bar' }
       its(:client_id){ should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
       its(:client_secret){ should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
-      its(:client_callback_url){ should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
+      its(:redirect_uri){ should == G5AuthenticationClient::DEFAULT_REDIRECT_URI }
       its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
       its(:authorization_code){ should be_nil}
       its(:access_token) { should be_nil }
@@ -104,7 +104,7 @@ describe G5AuthenticationClient::Configuration do
         config.endpoint = 'blah'
         config.client_id = 'blah'
         config.client_secret = 'blah'
-        config.client_callback_url = 'blah'
+        config.redirect_uri = 'blah'
         config.authorization_code = 'blah'
         config.access_token = 'blah'
       end
@@ -117,7 +117,7 @@ describe G5AuthenticationClient::Configuration do
     its(:endpoint) {should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:client_id) {should == G5AuthenticationClient::DEFAULT_CLIENT_ID}
     its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
-    its(:client_callback_url) {should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL}
+    its(:redirect_uri) {should == G5AuthenticationClient::DEFAULT_REDIRECT_URI}
     its(:debug?){ should be_false }
     its(:logger){ should be_instance_of(Logger) }
     its(:access_token) { should be_nil }
@@ -133,7 +133,7 @@ describe G5AuthenticationClient::Configuration do
         config.endpoint = endpoint
         config.client_id = client_id
         config.client_secret = client_secret
-        config.client_callback_url = client_callback_url
+        config.redirect_uri = redirect_uri
         config.authorization_code = authorization_code
         config.access_token = access_token
       end
@@ -148,7 +148,7 @@ describe G5AuthenticationClient::Configuration do
     its([:endpoint]) { should == endpoint }
     its([:client_id]) { should == client_id }
     its([:client_secret]) { should == client_secret }
-    its([:client_callback_url]) { should == client_callback_url}
+    its([:redirect_uri]) { should == redirect_uri}
     its([:authorization_code]){ should == authorization_code }
     its([:access_token]) { should == access_token }
   end
