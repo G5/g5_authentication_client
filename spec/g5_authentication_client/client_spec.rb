@@ -14,7 +14,7 @@ describe G5AuthenticationClient::Client do
   let(:password) {'password'}
   let(:client_id) {'client id'}
   let(:client_secret) {'client secret'}
-  let(:client_callback_url) {'/stuff'}
+  let(:redirect_uri) {'/stuff'}
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
 
@@ -27,7 +27,7 @@ describe G5AuthenticationClient::Client do
      :password => password,
      :client_id => client_id,
      :client_secret => client_secret,
-     :client_callback_url => client_callback_url,
+     :redirect_uri => redirect_uri,
      :authorization_code => authorization_code,
      :access_token => access_token
     }
@@ -59,7 +59,7 @@ describe G5AuthenticationClient::Client do
     its(:password) { should be_nil }
     its(:client_id) { should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
     its(:client_secret) { should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
-    its(:client_callback_url) { should == G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL }
+    its(:redirect_uri) { should == G5AuthenticationClient::DEFAULT_REDIRECT_URI }
     its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil}
     its(:access_token) { should be_nil }
@@ -152,9 +152,9 @@ describe G5AuthenticationClient::Client do
 
     it_should_behave_like 'a module configured attribute', :client_secret, G5AuthenticationClient::DEFAULT_CLIENT_SECRET
 
-    its(:client_callback_url) {should ==client_callback_url}
+    its(:redirect_uri) {should ==redirect_uri}
 
-    it_should_behave_like 'a module configured attribute', :client_callback_url, G5AuthenticationClient::DEFAULT_CLIENT_CALLBACK_URL
+    it_should_behave_like 'a module configured attribute', :redirect_uri, G5AuthenticationClient::DEFAULT_REDIRECT_URI
 
     its(:authorization_code) { should == authorization_code}
     it_should_behave_like 'a module configured attribute', :authorization_code, nil

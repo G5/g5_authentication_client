@@ -1,3 +1,10 @@
+## v0.1.0 (2013-11-05)
+
+* Rename all references to `client_callback_url` to `redirect_uri`.
+  This is in order to maintain consistency with the terminology used
+  in the OAuth 2.0 spec. This is a breaking change for any code written
+  against earlier versions of the client.
+
 ## v0.0.3 (2013-09-23)
 
 * Add support for retrieving user data based on current credentials

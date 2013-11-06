@@ -30,7 +30,7 @@ module G5AuthenticationClient
     # @!attribute [rw] client_secret
     #   @return [String] client secret for this application
 
-    # @!attribute [rw] client_callback_url
+    # @!attribute [rw] redirect_uri
     #   @return [String] callback url for application
 
     # @!attribute [rw] authorization_code
@@ -53,7 +53,7 @@ module G5AuthenticationClient
     # @option options [String] :endpoint The authentication endpoint
     # @option options [String] :client_id The client id for this application
     # @option options [String] :client_secret The client secret for this application
-    # @option options [String] :client_callback_url The client callback url for this application.
+    # @option options [String] :redirect_uri The client callback url for this application.
     # @option options [String] :authorization_code The authentication code from the authorization server.
     def initialize(options={})
       options.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
@@ -126,7 +126,7 @@ module G5AuthenticationClient
       @oauth_access_token ||= if access_token
         OAuth2::AccessToken.new(oauth_client, access_token)
       elsif authorization_code
-        oauth_client.auth_code.get_token(authorization_code,:redirect_uri=>client_callback_url)
+        oauth_client.auth_code.get_token(authorization_code,:redirect_uri=>redirect_uri)
       elsif username && password
         oauth_client.password.get_token(username,password)
       else

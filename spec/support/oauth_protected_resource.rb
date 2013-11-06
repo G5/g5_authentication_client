@@ -6,7 +6,7 @@ require 'spec_helper'
 # client_id
 # client_secret
 # authorization_code
-# client_callback_url
+# redirect_uri
 # username
 # password
 shared_examples_for 'an oauth protected resource' do |resource_type|
@@ -38,7 +38,7 @@ shared_examples_for 'an oauth protected resource' do |resource_type|
         'client_secret' => client_secret,
         'code' => authorization_code,
         'grant_type' => 'authorization_code',
-        'redirect_uri' => client_callback_url
+        'redirect_uri' => redirect_uri
       }
     end
 

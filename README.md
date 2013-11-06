@@ -17,13 +17,13 @@ Just rubygems:
 ## Examples ##
 
 Assuming you have an account on g5-authentication already. Register your client
-application and gather the client_id, client_secret, callback url, and generate
+application and gather the client_id, client_secret, redirect_uri, and generate
 an authorization code.
 
     G5AuthenticationClient.configure do |config|
       config.client_id = "blah"
       config.client_secret = "blah"
-      config.client_callback_url = "blah"
+      config.redirect_uri = "blah"
       config.endpoint = "blah"
       config.authorization_code = "blah"
     end
