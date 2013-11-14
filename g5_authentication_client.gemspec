@@ -20,6 +20,7 @@ Gem::Specification.new do |s|
   s.add_dependency('modelish', '~> 0.3')
   s.add_dependency('configlet', '~> 2.1')
   s.add_dependency('oauth2')
+  s.add_dependency('addressable')
   s.add_dependency('vcr')
 
   s.add_development_dependency('rake')

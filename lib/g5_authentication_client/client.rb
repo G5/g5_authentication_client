@@ -117,6 +117,16 @@ module G5AuthenticationClient
       User.new(response.parsed)
     end
 
+    # The URL for signing out of the auth server from the browser.
+    # Clients should redirect to this URL on sign out.
+    #
+    # @return [String] the url on the auth server for signing out
+    def sign_out_url
+      auth_server_url = Addressable::URI.parse(endpoint)
+      auth_server_url.path = '/users/sign_out'
+      auth_server_url.to_s
+    end
+
     private
     def oauth_client
       OAuth2::Client.new(client_id, client_secret, :site => endpoint)
@@ -133,6 +143,5 @@ module G5AuthenticationClient
         raise "Insufficient credentials for access token.  Supply a username/password or authentication code"
       end
     end
-
   end
 end

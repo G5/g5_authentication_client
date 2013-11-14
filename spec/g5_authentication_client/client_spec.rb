@@ -232,4 +232,12 @@ describe G5AuthenticationClient::Client do
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
+
+  describe '#sign_out_url' do
+    subject(:sign_out_url) { client.sign_out_url }
+
+    it 'should add the sign out path to the configured endpoint' do
+      expect(sign_out_url).to eq("#{endpoint}/users/sign_out")
+    end
+  end
 end
