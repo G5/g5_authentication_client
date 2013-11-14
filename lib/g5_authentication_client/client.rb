@@ -78,7 +78,7 @@ module G5AuthenticationClient
     def create_user(options={})
       user=User.new(options)
       user.validate_for_create!
-      response=oauth_access_token.post('/v1/users', :params=>{:user=>user.to_hash})
+      response=oauth_access_token.post('/v1/users', params: {user: user.to_hash})
       User.new(response.parsed)
     end
 
@@ -90,7 +90,7 @@ module G5AuthenticationClient
     def update_user(options={})
       user=User.new(options)
       user.validate!
-      response=oauth_access_token.put("/v1/users/#{user.id}", :params=>{:user=>user.to_hash})
+      response=oauth_access_token.put("/v1/users/#{user.id}", params: {user: user.to_hash})
       User.new(response.parsed)
     end
 
@@ -131,14 +131,14 @@ module G5AuthenticationClient
 
     private
     def oauth_client
-      OAuth2::Client.new(client_id, client_secret, :site => endpoint)
+      OAuth2::Client.new(client_id, client_secret, site: endpoint)
     end
 
     def oauth_access_token
       @oauth_access_token ||= if access_token
         OAuth2::AccessToken.new(oauth_client, access_token)
       elsif authorization_code
-        oauth_client.auth_code.get_token(authorization_code,:redirect_uri=>redirect_uri)
+        oauth_client.auth_code.get_token(authorization_code, redirect_uri: redirect_uri)
       elsif username && password
         oauth_client.password.get_token(username,password)
       else

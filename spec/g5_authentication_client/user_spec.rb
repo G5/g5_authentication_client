@@ -5,10 +5,10 @@ describe G5AuthenticationClient::User do
   let(:user){G5AuthenticationClient::User.new(attributes)}
 
   let(:attributes) do
-    {:email => email,
-    :password => password,
-    :password_confirmation => password_confirmation,
-    :id => id
+    {email: email,
+    password: password,
+    password_confirmation: password_confirmation,
+    id: id
     }
   end
 

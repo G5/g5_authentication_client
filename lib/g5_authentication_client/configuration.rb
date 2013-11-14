@@ -18,15 +18,15 @@ module G5AuthenticationClient
     def self.extended(base)
       # Default configuration - happens whether or not .configure is called
       base.config :g5_authentication_client do
-        default :debug => 'false'
-        default :username => nil
-        default :password => nil
-        default :endpoint => DEFAULT_ENDPOINT
-        default :client_id => DEFAULT_CLIENT_ID
-        default :client_secret => DEFAULT_CLIENT_SECRET
-        default :redirect_uri => DEFAULT_REDIRECT_URI
-        default :authorization_code => nil
-        default :access_token => nil
+        default debug: 'false'
+        default username: nil
+        default password: nil
+        default endpoint: DEFAULT_ENDPOINT
+        default client_id: DEFAULT_CLIENT_ID
+        default client_secret: DEFAULT_CLIENT_SECRET
+        default redirect_uri: DEFAULT_REDIRECT_URI
+        default authorization_code: nil
+        default access_token: nil
       end
     end
 

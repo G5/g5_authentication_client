@@ -7,22 +7,22 @@ module G5AuthenticationClient
     # @!attribute [rw] email
     #   @return [String]
     #   The user's email address.
-    property :email, :type => String, :required => true
+    property :email, type: String, required: true
 
     # @!attribute [rw] password
     #   @return [String]
     #   The user's password.  Required to create a user.
-    property :password, :type => String
+    property :password, type: String
 
     # @!attribute [rw] password_confirmation
     #   @return [String]
     #   The user's password_confirmation.
-    property :password_confirmation, :type => String
+    property :password_confirmation, type: String
 
     # @!attribute [rw] id
     #   @return [Integer]
     #   The user's id.  Not required to create a user.
-    property :id, :type => Integer
+    property :id, type: Integer
 
     def validate_for_create!
       validate!
