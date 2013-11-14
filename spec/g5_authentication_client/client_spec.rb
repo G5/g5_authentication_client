@@ -234,10 +234,26 @@ describe G5AuthenticationClient::Client do
   end
 
   describe '#sign_out_url' do
-    subject(:sign_out_url) { client.sign_out_url }
+    subject { sign_out_url }
 
-    it 'should add the sign out path to the configured endpoint' do
-      expect(sign_out_url).to eq("#{endpoint}/users/sign_out")
+    context 'without redirect_url' do
+      let(:sign_out_url) { client.sign_out_url }
+
+      it 'should add the sign out path to the configured endpoint' do
+        expect(sign_out_url).to eq("#{endpoint}/users/sign_out")
+      end
+    end
+
+    context 'with redirect_url' do
+      let(:sign_out_url) { client.sign_out_url('https://test.host/home')}
+
+      it 'should add the sign out path to the endpoint' do
+        expect(sign_out_url).to match /^#{endpoint}\/users\/sign_out/
+      end
+
+      it 'should add the redirect_url as a query param' do
+        expect(sign_out_url). to match /\?redirect_url=https%3A%2F%2Ftest.host%2Fhome$/
+      end
     end
   end
 end

@@ -117,13 +117,15 @@ module G5AuthenticationClient
       User.new(response.parsed)
     end
 
-    # The URL for signing out of the auth server from the browser.
-    # Clients should redirect to this URL on sign out.
+    # Return the URL for signing out of the auth server.
+    # Clients should redirect to this URL to globally sign out.
     #
-    # @return [String] the url on the auth server for signing out
-    def sign_out_url
+    # @param [String] redirect_url the URL that the auth server should redirect back to after sign out
+    # @return [String] the auth server endpoint for signing out
+    def sign_out_url(redirect_url=nil)
       auth_server_url = Addressable::URI.parse(endpoint)
       auth_server_url.path = '/users/sign_out'
+      auth_server_url.query_values = {redirect_url: redirect_url} if redirect_url
       auth_server_url.to_s
     end
 
