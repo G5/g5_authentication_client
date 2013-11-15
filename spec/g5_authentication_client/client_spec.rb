@@ -20,16 +20,16 @@ describe G5AuthenticationClient::Client do
 
   let(:options) do
     {
-     :debug => debug,
-     :logger => logger,
-     :endpoint => endpoint,
-     :username => username,
-     :password => password,
-     :client_id => client_id,
-     :client_secret => client_secret,
-     :redirect_uri => redirect_uri,
-     :authorization_code => authorization_code,
-     :access_token => access_token
+     debug: debug,
+     logger: logger,
+     endpoint: endpoint,
+     username: username,
+     password: password,
+     client_id: client_id,
+     client_secret: client_secret,
+     redirect_uri: redirect_uri,
+     authorization_code: authorization_code,
+     access_token: access_token
     }
   end
 
@@ -40,15 +40,15 @@ describe G5AuthenticationClient::Client do
   let(:auth_header_value) { "#{token_type} #{access_token_value}" }
 
   let(:new_user_options) do
-    {:email=>email,
-    :password=>"#{password}x",
-    :id=>user_id}
+    {email: email,
+    password: "#{password}x",
+    id: user_id}
   end
 
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
   let(:user_id){1}
-  let(:returned_user){{:id=>user_id,:email=>email}}
+  let(:returned_user){{id: user_id,email: email}}
 
   context 'with default configuration' do
     let(:client) { G5AuthenticationClient::Client.new }
@@ -231,5 +231,29 @@ describe G5AuthenticationClient::Client do
     end
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+  end
+
+  describe '#sign_out_url' do
+    subject { sign_out_url }
+
+    context 'without redirect_url' do
+      let(:sign_out_url) { client.sign_out_url }
+
+      it 'should add the sign out path to the configured endpoint' do
+        expect(sign_out_url).to eq("#{endpoint}/users/sign_out")
+      end
+    end
+
+    context 'with redirect_url' do
+      let(:sign_out_url) { client.sign_out_url('https://test.host/home')}
+
+      it 'should add the sign out path to the endpoint' do
+        expect(sign_out_url).to match /^#{endpoint}\/users\/sign_out/
+      end
+
+      it 'should add the redirect_url as a query param' do
+        expect(sign_out_url). to match /\?redirect_url=https%3A%2F%2Ftest.host%2Fhome$/
+      end
+    end
   end
 end
