@@ -1,3 +1,8 @@
+## v0.1.1 (2013-11-15)
+
+* Add `G5AuthenticationClient::Client#sign_out_url`. The client should
+  redirect to this target URL in order sign out the current user.
+
 ## v0.1.0 (2013-11-05)
 
 * Rename all references to `client_callback_url` to `redirect_uri`.
