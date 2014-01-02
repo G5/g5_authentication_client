@@ -9,7 +9,7 @@ describe G5AuthenticationClient::Configuration do
 
   subject { test_module }
 
-  let(:logger) { mock() }
+  let(:logger) { double() }
   let(:username) {'username'}
   let(:password) {'password'}
   let(:client_id) {'client id'}

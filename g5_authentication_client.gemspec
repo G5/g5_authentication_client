@@ -14,7 +14,7 @@ Gem::Specification.new do |s|
 
   s.files = `git ls-files`.split("\n")
   s.test_files = `git ls-files -- {test,spec,features}/*`.split("\n")
-  
+
   s.require_paths = ["lib"]
 
   s.add_dependency('modelish', '~> 0.3')
@@ -27,11 +27,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency('rspec')
   s.add_development_dependency('webmock')
   s.add_development_dependency('fakefs')
-
+  s.add_development_dependency('simplecov')
+  s.add_development_dependency('codeclimate-test-reporter')
   s.add_development_dependency('yard')
   s.add_development_dependency('rdiscount')
-
-  # specify dependencies here, for example:
-  # s.add_development_dependency "cucumber"
-  # s.add_runtime_dependency "rest-client"
 end
