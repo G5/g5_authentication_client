@@ -9,7 +9,7 @@ describe G5AuthenticationClient::Client do
   let(:client) { G5AuthenticationClient::Client.new(options) }
 
   let(:debug) { true }
-  let(:logger) { mock() }
+  let(:logger) { double() }
   let(:username) {'username'}
   let(:password) {'password'}
   let(:client_id) {'client id'}
@@ -107,7 +107,7 @@ describe G5AuthenticationClient::Client do
         let(:new_logger) { nil }
 
         context 'when there is a logger configured at the top-level module' do
-          let(:configured_logger) { mock() }
+          let(:configured_logger) { double() }
           before { G5AuthenticationClient.configure { |config| config.logger = configured_logger } }
 
           it 'should change the value of the logger to match the configuration' do
@@ -124,7 +124,7 @@ describe G5AuthenticationClient::Client do
       end
 
       context 'with new logger' do
-        let(:new_logger) { mock() }
+        let(:new_logger) { double() }
 
         it 'should change the value of the logger to match the new value' do
           expect { subject }.to change { client.logger }.from(logger).to(new_logger)
