@@ -102,6 +102,10 @@ an authorization code.
 
     client.delete_user user.id
 
+    client.me
+
+    client.token_info
+
 ## Contributing
 
 1. Fork it

@@ -21,7 +21,6 @@ Gem::Specification.new do |s|
   s.add_dependency('configlet', '~> 2.1')
   s.add_dependency('oauth2')
   s.add_dependency('addressable')
-  s.add_dependency('vcr')
 
   s.add_development_dependency('rake')
   s.add_development_dependency('rspec')
@@ -31,4 +30,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency('codeclimate-test-reporter')
   s.add_development_dependency('yard')
   s.add_development_dependency('rdiscount')
+  s.add_development_dependency('vcr')
 end
