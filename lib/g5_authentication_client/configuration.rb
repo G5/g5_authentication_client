@@ -17,7 +17,7 @@ module G5AuthenticationClient
 
     def self.extended(base)
       # Default configuration - happens whether or not .configure is called
-      base.config :g5_authentication_client do
+      base.config :g5_auth do
         default debug: 'false'
         default username: nil
         default password: nil
