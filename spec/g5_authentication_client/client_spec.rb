@@ -256,4 +256,27 @@ describe G5AuthenticationClient::Client do
       end
     end
   end
+
+  describe '#token_info' do
+    subject(:token_info) { client.token_info }
+
+    let(:returned_token_info) do
+      {
+        resource_owner_id: '42',
+        scopes: [],
+        expires_in_seconds: 3600,
+        application: { uid: 'application-uid-abc123' }
+      }
+    end
+
+    before do
+      stub_request(:get, /#{endpoint}\/oauth\/token\/info/).
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_token_info.to_json,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::TokenInfo
+  end
 end
