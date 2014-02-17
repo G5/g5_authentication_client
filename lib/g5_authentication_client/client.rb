@@ -117,6 +117,13 @@ module G5AuthenticationClient
       User.new(response.parsed)
     end
 
+    # Get the access token info for the currently active token
+    # @return [G5AuthenticationClient::TokenInfo]
+    def token_info
+      response = oauth_access_token.get('/oauth/token/info')
+      TokenInfo.new(response.parsed)
+    end
+
     # Return the URL for signing out of the auth server.
     # Clients should redirect to this URL to globally sign out.
     #
