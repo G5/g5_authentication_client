@@ -36,6 +36,33 @@ describe G5AuthenticationClient::Configuration do
     its(:access_token) { should be_nil }
   end
 
+  context 'with environment variable configuration' do
+    before do
+      ENV['G5_AUTH_CLIENT_ID'] = client_id
+      ENV['G5_AUTH_CLIENT_SECRET'] = client_secret
+      ENV['G5_AUTH_REDIRECT_URI'] = redirect_uri
+      ENV['G5_AUTH_ENDPOINT'] = endpoint
+    end
+
+    after do
+      ENV['G5_AUTH_CLIENT_ID'] = nil
+      ENV['G5_AUTH_CLIENT_SECRET'] = nil
+      ENV['G5_AUTH_REDIRECT_URI'] = nil
+      ENV['G5_AUTH_ENDPOINT'] = nil
+    end
+
+    it { should_not be_debug }
+    its(:logger) { should be_an_instance_of(Logger) }
+    its(:username) { should be_nil }
+    its(:password) { should be_nil }
+    its(:client_id) { should == client_id }
+    its(:client_secret) { should == client_secret }
+    its(:redirect_uri) { should == redirect_uri }
+    its(:endpoint) { should == endpoint }
+    its(:authorization_code) { should be_nil }
+    its(:access_token) { should be_nil }
+  end
+
   describe '.configure' do
     subject { test_module.configure(&config_block) }
 
