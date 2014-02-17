@@ -1,0 +1,27 @@
+require 'modelish'
+
+module G5AuthenticationClient
+  # G5 Authentication access token info
+  class TokenInfo < Modelish::Base
+    # @!attribute [rw] resource_owner_id
+    #   @return [String]
+    #   The ID of the user that owns the resource
+    property :resource_owner_id, type: String
+
+    # @!attribute [rw] scopes
+    #   @return [Array]
+    #   The OAuth scopes associated with this token
+    property :scopes, type: Array, default: []
+
+    # @!attribute [rw] expires_in_seconds
+    #   @return [Integer]
+    #   The amount of time until the token expires
+    property :expires_in_seconds, type: Integer
+
+    # @!attribute [rw] application_uid
+    #   @return [String]
+    #   The UID of the OAuth application that requested this token
+    property :application_uid, from: :application,
+                               type: lambda { |val| (val[:uid] || val['uid']).to_s }
+  end
+end
