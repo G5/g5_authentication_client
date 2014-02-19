@@ -163,6 +163,14 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'a module configured attribute', :access_token, nil
   end
 
+  describe '#get_access_token' do
+    subject(:get_access_token) { client.get_access_token }
+
+    it "should return the access token" do
+      expect(subject).to eq(access_token)
+    end
+  end
+
   describe '#create_user' do
     subject(:create_user) { client.create_user(new_user_options) }
 
