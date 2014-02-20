@@ -59,6 +59,12 @@ module G5AuthenticationClient
       options.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
     end
 
+    # Retrieves the access token as a string
+    # @return [String] the access token value
+    def get_access_token
+      oauth_access_token.token
+    end
+
     # Retrieves an attribute's value. If the attribute has not been set
     # on this object, it is retrieved from the global configuration.
     #
