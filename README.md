@@ -19,12 +19,15 @@ Just rubygems:
 ### Environment variables ###
 
 You can set the default value for several configuration settings via
-environment variable:
+environment variable (not all of these will be used concurrently!):
 
 * `G5_AUTH_CLIENT_ID` - the OAuth 2.0 application ID from the auth server
 * `G5_AUTH_CLIENT_SECRET` - the OAuth 2.0 application secret from the auth server
 * `G5_AUTH_REDIRECT_URI` - the OAuth 2.0 redirect URI registered with the auth server
 * `G5_AUTH_ENDPOINT` - the endpoint URL for the G5 auth server
+* `G5_AUTH_USERNAME` - the username for the end user to authenticate as
+* `G5_AUTH_PASSWORD` - the password for the end user to authenticate as
+* `G5_AUTH_ACCESS_TOKEN` - a valid OAuth 2.0 access token
 
 ### Module-level config ###
 
@@ -77,34 +80,164 @@ client.endpoint
 # => "https://dev-auth.g5search.com"
 ```
 
+## Usage ##
+
+### Retrieving user information ###
+
+Assuming you have a valid access token, set up your client instance:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_token')
+```
+
+You can retrieve information for the user associated with the access token:
+
+```ruby
+current_user = auth_client.me
+# => #<G5AuthenticationClient::User email="my.user@test.host" id=1>
+```
+
+You can also retrieve informatino about any other user by ID:
+
+```ruby
+user = auth_client.get_user(42)
+# => #<G5AuthenticationClient::User email="another.user@test.host" id=42>
+```
+
+### Retrieving token information ###
+
+You can retrieve information specific to the current access token, including
+scopes and expiration time:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+token_info = auth_client.token_info
+# => #<G5AuthenticationClient::TokenInfo application_uid={"uid"=>"my_application_id"} expires_in_seconds=5183805 resource_owner_id=1 scopes=[]>
+```
+
+To retrieve the token value itself:
+
+```ruby
+auth_client.get_access_token
+# => "my_access_token"
+```
+
+### Creating a user ###
+
+TODO
+
+### Updating a user ###
+
+TODO
+
+### Deleting a user ###
+
+TODO
+
+### Sign-out URL ###
+
+TODO
+
 ## Examples ##
 
-Assuming you have an account on g5-authentication already. Register your client
-application and gather the client_id, client_secret, redirect_uri, and generate
-an authorization code.
+These examples assume that you have already registered your client application
+and at least one end user on the auth server.
 
-    G5AuthenticationClient.configure do |config|
-      config.client_id = "blah"
-      config.client_secret = "blah"
-      config.redirect_uri = "blah"
-      config.endpoint = "blah"
-      config.authorization_code = "blah"
-    end
+### Authorization grant ####
 
-    client=G5AuthenticationClient::Client.new
+You will need the following credentials:
 
-    user=client.create_user({email: 'foo@bar.com', password: 'yadayada'})
+* Client ID
+* Client secret
+* Redirect URI
+* Authorization code
 
-    user.email="something@else.com"
-    client.update_user user.to_hash
+The client ID, client secret, and redirect URI will be the same for any request
+your application may make, so you will probably want to configure these either
+via environment variables or at the module level:
 
-    client.get_user user.id
+```ruby
+G5AuthenticationClient.configure do |config|
+  config.client_id = 'my-client-id'
+  config.client_secret = 'my-client-secret'
+  config.redirect_uri = 'https://test.host/callback'
+end
+```
 
-    client.delete_user user.id
+Each authorization code can only be used once, so it's best configured on the
+client instance:
 
-    client.me
+```ruby
+auth_client = G5AuthenticationClient::Client.new(authorization_code: 'my_one_time_use_code')
+```
 
-    client.token_info
+You can now execute actions against the auth service using that client:
+
+```ruby
+auth_client.me
+# => #<G5AuthenticationClient::User email="another.user@test.host" id=42>
+```
+
+Or you can retrieve an access token in order to authenticate to another G5
+service:
+
+```ruby
+auth_client.get_access_token
+# => "my-g5-access-token-value-abc123"
+```
+
+### Resource owner password credentials grant ###
+
+This grant type is only available to highly trusted client applications that
+do not require explicit authorization by the end user.
+
+You will need the following credentials:
+
+* Client ID
+* Client secret
+* Redirect URI
+* Username
+* Password
+
+Your client credentials will always be the same for every request, so use
+module-level configuration or environment variables for those:
+
+```bash
+export G5_AUTH_CLIENT_ID='my-client-id'
+export G5_AUTH_CLIENT_SECRET='my-client-secret'
+export G5_AUTH_REDIRECT_URI='https://test.host/callback'
+```
+
+If you want to use a different username and password per request, then you
+should configure these on each client instance:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(username: 'user1@test.host', password: 'secret1')
+auth_client.me
+# => #<G5AuthenticationClient::User email="user1@test.host" id=1>
+
+auth_client = G5AuthenticationClient::Client.new(username: 'user2@test.host', password: 'secret2')
+auth_client.me
+# => #<G5AuthenticationClient::User email="user2@test.host" id=2>
+```
+
+However, if you want to use the same user credentials for all requests,
+you can set them using environment variables:
+
+```bash
+export G5_AUTH_USERNAME='user1@test.host'
+export G5_AUTH_PASSWORD='secret1'
+```
+
+Now every client instance will authenticate as the same user by default:
+
+```ruby
+G5AuthenticationClient::Client.new.me
+# => #<G5AuthenticationClient::User email="user1@test.host" id=1>
+
+G5AuthenticationClient::Client.new.me
+# => #<G5AuthenticationClient::User email="user1@test.host" id=1>
+```
 
 ## Contributing
 
