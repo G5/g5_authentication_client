@@ -124,19 +124,69 @@ auth_client.get_access_token
 
 ### Creating a user ###
 
-TODO
+To create a user, you need their email and password. You can either pass in
+these credentials as an option hash:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+user = auth_client.create_user(email: 'new.user@test.host',
+                               password: 'testing',
+                               password_confirmation: 'testing')
+# => #<G5AuthenticationClient::User email="new.user@test.host" id=123>
+```
+
+Or you can pass in an instance of `G5AuthenticationClient::User`:
+
+```ruby
+user = G5AuthenticationClient::User.new(email: 'new.user@test.host',
+                                        password: 'testing',
+                                        password_confirmation: 'testing')
+auth_client.create_user(user)
+```
 
 ### Updating a user ###
 
-TODO
+To update an existing user, you'll need the user ID and the new credentials:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+auth_client.update_user(id: 42,
+                        email: 'updated.email@test.host',
+                        password: 'updated_secret',
+                        password_confirmation: 'updated_secret')
+```
+
+You can also pass in a `G5AuthenticationClient::User` instance instead:
+
+```ruby
+user = auth_client.create_user(email: 'new.user@test.host',
+                               password: 'secret',
+                               password_confirmation: 'secret')
+user.email = 'updated.email@test.host'
+auth_client.update_user(user)
+```
 
 ### Deleting a user ###
 
-TODO
+To delete a user, you need the user ID:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+auth_client.delete_user(42)
+```
 
 ### Sign-out URL ###
 
-TODO
+In order to sign out of the G5 auth service from a web browser, your client
+application must redirect to the auth server's sign-out URL. You can
+pass in a redirect URL for the auth server to redirect back to after the
+sign-out process is complete.
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new
+auth_client.sign_out_url('https://myapp.host/callback')
+# => "https://auth.g5search.com/users/sign_out?redirect_url=https%3A%2F%2Fmyapp.host%2Fcallback"
+```
 
 ## Examples ##
 
