@@ -101,7 +101,7 @@ module G5AuthenticationClient
     # @return [G5AuthenticationClient] _self
     # @see VALID_CONFIG_OPTIONS
     def configure
-      config :g5_authentication_client do
+      config :g5_auth do
         yield self
       end
 

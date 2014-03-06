@@ -42,6 +42,7 @@ describe G5AuthenticationClient::Configuration do
       ENV['G5_AUTH_CLIENT_SECRET'] = client_secret
       ENV['G5_AUTH_REDIRECT_URI'] = redirect_uri
       ENV['G5_AUTH_ENDPOINT'] = endpoint
+      ENV['G5_AUTH_USERNAME'] = 'foo'
     end
 
     after do
@@ -53,7 +54,7 @@ describe G5AuthenticationClient::Configuration do
 
     it { should_not be_debug }
     its(:logger) { should be_an_instance_of(Logger) }
-    its(:username) { should be_nil }
+    its(:username) { should eq('foo')}
     its(:password) { should be_nil }
     its(:client_id) { should == client_id }
     its(:client_secret) { should == client_secret }
@@ -61,6 +62,7 @@ describe G5AuthenticationClient::Configuration do
     its(:endpoint) { should == endpoint }
     its(:authorization_code) { should be_nil }
     its(:access_token) { should be_nil }
+
   end
 
   describe '.configure' do
@@ -116,6 +118,22 @@ describe G5AuthenticationClient::Configuration do
       its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
       its(:authorization_code){ should be_nil}
       its(:access_token) { should be_nil }
+
+      context 'when there is an env variable default' do
+
+        let(:access_token_value) { 'test' }
+
+        before do
+          ENV['G5_AUTH_ACCESS_TOKEN']=access_token_value
+        end
+
+        after do
+          ENV['G5_AUTH_ACCESS_TOKEN']=nil
+        end
+
+        its(:access_token) { should eq(access_token_value) }
+
+      end
     end
   end
 
