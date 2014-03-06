@@ -2,17 +2,27 @@
 
 A client library for the g5-authentication service.
 
-## Installation ##
+## Current version ##
 
-You will need the g5 private gem server at gemfury as a gem source.
+0.1.3
+
+## Requirements ##
+
+* Ruby >= 1.9.3
+
+## Installation ##
 
 In Gemfile:
 
-    gem 'g5_authentication_client'
+```ruby
+gem 'g5_authentication_client'
+```
 
 Just rubygems:
 
-    gem install g5_authentication_client
+```console
+$ gem install g5_authentication_client
+```
 
 ## Configuration ##
 
@@ -27,7 +37,7 @@ environment variable (not all of these will be used concurrently!):
 * `G5_AUTH_ENDPOINT` - the endpoint URL for the G5 auth server
 * `G5_AUTH_USERNAME` - the username for the end user to authenticate as
 * `G5_AUTH_PASSWORD` - the password for the end user to authenticate as
-* `G5_AUTH_ACCESS_TOKEN` - a valid OAuth 2.0 access token
+* `G5_AUTH_ACCESS_TOKEN` - a valid OAuth 2.0 access token (note that tokens do expire)
 
 ### Module-level config ###
 
@@ -289,7 +299,12 @@ G5AuthenticationClient::Client.new.me
 # => #<G5AuthenticationClient::User email="user1@test.host" id=1>
 ```
 
-## Contributing
+## Authors ##
+
+* Rob Revels / [@sleverbor](https://github.com/sleverbor)
+* Maeve Revels / [@maeve](https://github.com/maeve)
+
+## Contributing ##
 
 1. Fork it
 2. Get it running
@@ -302,7 +317,15 @@ G5AuthenticationClient::Client.new.me
 If you find bugs, have feature requests or questions, please
 [file an issue](https://github.com/g5search/g5_authentication_client/issues).
 
-## License
+### Running the specs ###
+
+All you have to do is execute rspec through bundler:
+
+```console
+$ bundle exec rspec spec
+```
+
+## License ##
 
 Copyright (c) 2014 G5
 
