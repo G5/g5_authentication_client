@@ -2,6 +2,10 @@
 
 A client library for the g5-authentication service.
 
+## Current Version ##
+
+0.1.4
+
 ## Installation ##
 
 You will need the g5 private gem server at gemfury as a gem source.

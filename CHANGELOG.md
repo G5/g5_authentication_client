@@ -1,3 +1,7 @@
+## v0.1.4 (2014-03-06)
+
+* Change configure method namespace to g5_auth from g5_authentication_client
+
 ## v0.1.1 (2013-11-15)
 
 * Add `G5AuthenticationClient::Client#sign_out_url`. The client should
