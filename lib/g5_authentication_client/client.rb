@@ -1,3 +1,5 @@
+require 'addressable/uri'
+
 module G5AuthenticationClient
   # G5AuthenticationClient::Client can be used to authenticate with the G5 OAuth 2
   # authorization server.  It can also be used to create G5 users.
