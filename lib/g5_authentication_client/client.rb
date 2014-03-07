@@ -1,3 +1,5 @@
+require 'addressable/uri'
+
 module G5AuthenticationClient
   # G5AuthenticationClient::Client can be used to authenticate with the G5 OAuth 2
   # authorization server.  It can also be used to create G5 users.
@@ -78,8 +80,9 @@ module G5AuthenticationClient
 
     # Create a user from the options
     # @param [Hash] options
-    # #option options [String] :username The new user's username.
-    # #option options [String] :password The new user's password.
+    # @option options [String] :email The new user's email address
+    # @option options [String] :password The new user's password
+    # @option options [String] :password_confirmation The new user's password confirmation string
     # @return [G5AuthenticationClient::User]
     def create_user(options={})
       user=User.new(options)
@@ -90,8 +93,9 @@ module G5AuthenticationClient
 
     # Update an existing user
     # @param [Hash] options
-    # #option options [String] :username The user's username.
-    # #option options [String] :password The user's password.
+    # @option options [String] :email The new user's email address
+    # @option options [String] :password The new user's password
+    # @option options [String] :password_confirmation The new user's password confirmation string
     # @return [G5AuthenticationClient::User]
     def update_user(options={})
       user=User.new(options)
