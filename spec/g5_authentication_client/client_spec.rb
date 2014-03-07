@@ -17,6 +17,7 @@ describe G5AuthenticationClient::Client do
   let(:redirect_uri) {'/stuff'}
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
+  let(:allow_password_credentials){ 'false' }
 
   let(:options) do
     {
@@ -29,7 +30,8 @@ describe G5AuthenticationClient::Client do
      client_secret: client_secret,
      redirect_uri: redirect_uri,
      authorization_code: authorization_code,
-     access_token: access_token
+     access_token: access_token,
+     allow_password_credentials: allow_password_credentials
     }
   end
 
@@ -63,6 +65,7 @@ describe G5AuthenticationClient::Client do
     its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil}
     its(:access_token) { should be_nil }
+    its(:allow_password_credentials) { should == 'true'}
   end
 
   context 'with non-default configuration' do
@@ -161,6 +164,48 @@ describe G5AuthenticationClient::Client do
 
     its(:access_token) { should == access_token_value }
     it_should_behave_like 'a module configured attribute', :access_token, nil
+
+    its(:allow_password_credentials) { should == allow_password_credentials }
+    it_should_behave_like 'a module configured attribute', :allow_password_credentials, 'true'
+  end
+
+  describe '#allow_password_credentials??' do
+    subject{ client.allow_password_credentials? }
+
+    context 'when the allow_password_credentials is set to true' do
+      let(:allow_password_credentials) {'true'}
+
+      context 'with non-nil username and password' do
+
+        it 'should be true' do
+          expect(subject).to be_true
+        end
+      end
+
+      context 'when username is nil' do
+        let(:username) {}
+
+        it 'should be false' do
+          expect(subject).to be_false
+        end
+      end
+
+      context 'when password is nil' do
+        let(:password) {}
+
+        it 'should be false' do
+          expect(subject).to be_false
+        end
+      end
+    end
+
+    context 'when the allow_password_credentials is set to false' do
+      let(:allow_password_credentials) {'false'}
+
+      it 'should be false' do
+        expect(subject).to be_false
+      end
+    end
   end
 
   describe '#get_access_token' do

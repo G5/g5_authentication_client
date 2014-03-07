@@ -56,6 +56,7 @@ shared_examples_for 'an oauth protected resource' do |resource_type|
   context 'when there is a username and password' do
     let(:access_token) { nil }
     let(:authorization_code) { nil }
+    let(:allow_password_credentials) {'true'}
 
     let(:token_request_by_password) do
       {

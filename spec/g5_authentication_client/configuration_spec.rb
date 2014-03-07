@@ -18,6 +18,7 @@ describe G5AuthenticationClient::Configuration do
   let(:endpoint){ 'http://endpoint.com' }
   let(:authorization_code){ 'code' }
   let(:access_token) { 'access_token_test' }
+  let(:allow_password_credentials) { 'false' }
 
   after { test_module.reset }
 
@@ -34,6 +35,7 @@ describe G5AuthenticationClient::Configuration do
     its(:endpoint){should == G5AuthenticationClient::DEFAULT_ENDPOINT}
     its(:authorization_code){ should be_nil }
     its(:access_token) { should be_nil }
+    its(:allow_password_credentials) { should eq('true') }
   end
 
   context 'with environment variable configuration' do
@@ -43,6 +45,7 @@ describe G5AuthenticationClient::Configuration do
       ENV['G5_AUTH_REDIRECT_URI'] = redirect_uri
       ENV['G5_AUTH_ENDPOINT'] = endpoint
       ENV['G5_AUTH_USERNAME'] = 'foo'
+      ENV['G5_AUTH_ALLOW_PASSWORD_CREDENTIALS'] = 'false'
     end
 
     after do
@@ -62,6 +65,7 @@ describe G5AuthenticationClient::Configuration do
     its(:endpoint) { should == endpoint }
     its(:authorization_code) { should be_nil }
     its(:access_token) { should be_nil }
+    its(:allow_password_credentials) { should == allow_password_credentials }
 
   end
 
@@ -81,6 +85,7 @@ describe G5AuthenticationClient::Configuration do
           config.endpoint = endpoint
           config.authorization_code = authorization_code
           config.access_token = access_token
+          config.allow_password_credentials = allow_password_credentials
         end
       end
 
@@ -95,6 +100,7 @@ describe G5AuthenticationClient::Configuration do
       its(:endpoint){ should == endpoint}
       its(:authorization_code){ should == authorization_code}
       its(:access_token) { should == access_token }
+      its(:allow_password_credentials) { should == allow_password_credentials }
     end
 
     context 'with partial configuration' do
@@ -152,6 +158,7 @@ describe G5AuthenticationClient::Configuration do
         config.redirect_uri = 'blah'
         config.authorization_code = 'blah'
         config.access_token = 'blah'
+        config.allow_password_credentials = 'false'
       end
     end
 
@@ -166,6 +173,7 @@ describe G5AuthenticationClient::Configuration do
     its(:debug?){ should be_false }
     its(:logger){ should be_instance_of(Logger) }
     its(:access_token) { should be_nil }
+    its(:allow_password_credentials) { should == 'true' }
   end
 
   describe '.options' do
@@ -181,6 +189,7 @@ describe G5AuthenticationClient::Configuration do
         config.redirect_uri = redirect_uri
         config.authorization_code = authorization_code
         config.access_token = access_token
+        config.allow_password_credentials = allow_password_credentials
       end
     end
 
@@ -196,5 +205,6 @@ describe G5AuthenticationClient::Configuration do
     its([:redirect_uri]) { should == redirect_uri}
     its([:authorization_code]){ should == authorization_code }
     its([:access_token]) { should == access_token }
+    its([:allow_password_credentials]) { should == allow_password_credentials }
   end
 end
