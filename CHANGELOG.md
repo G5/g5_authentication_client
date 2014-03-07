@@ -1,3 +1,8 @@
+## v0.1.5 (2014-03-07)
+
+* Add allow_password_credentials flag to determine whether client instances
+* will allow use of username/passwored attributes
+
 ## v0.1.4 (2014-03-06)
 
 * Change configure method namespace to g5_auth from g5_authentication_client
