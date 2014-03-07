@@ -5,12 +5,14 @@ module G5AuthenticationClient
   # All valid configurations options
   VALID_CONFIG_OPTIONS = [:debug, :logger, :username, :password, :client_id,
                           :client_secret, :redirect_uri, :endpoint,
-                          :authorization_code, :access_token]
+                          :authorization_code, :access_token,
+                          :allow_password_credentials]
 
   DEFAULT_ENDPOINT = "http://auth.g5search.com"
   DEFAULT_CLIENT_ID = "theid"
   DEFAULT_CLIENT_SECRET = "thesecret"
   DEFAULT_REDIRECT_URI = "theurl"
+  DEFAULT_ALLOW_PASSWORD_CREDENTIALS = 'true'
 
   module Configuration
     include Configlet
@@ -27,6 +29,7 @@ module G5AuthenticationClient
         default redirect_uri: DEFAULT_REDIRECT_URI
         default authorization_code: nil
         default access_token: nil
+        default allow_password_credentials: DEFAULT_ALLOW_PASSWORD_CREDENTIALS
       end
     end
 
@@ -41,9 +44,12 @@ module G5AuthenticationClient
       end
     end
 
+    # !@attribute [rw] allow_password_credentials
+    #   @return [String] set to true or 'true' to enable use of the username and password
+
     # !@attribute [rw] debug
     #   @return [String] set to true or 'true' to enable debug logging (defaults to false)
-    #
+
     # !@attribute [rw] endpoint
     #   @return [String] the service endpoint URL (Defaults to G5AuthenticationClient::DEFAULT_ENDPOINT)
 

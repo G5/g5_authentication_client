@@ -11,6 +11,10 @@ module G5AuthenticationClient
       define_method(opt) { get_value(opt) }
     end
 
+    # @!attribute [rw] allow_password_credentials
+    #   @return [String] 'true' if the client is using the
+    #   username and password attributes
+
     # @!attribute [rw] endpoint
     #   @return [String] the g5-authentication service endpoint URL
 
@@ -57,8 +61,15 @@ module G5AuthenticationClient
     # @option options [String] :client_secret The client secret for this application
     # @option options [String] :redirect_uri The client callback url for this application.
     # @option options [String] :authorization_code The authentication code from the authorization server.
+    # @option options [String] :allow_password_credentials The client will use username and password if true.
     def initialize(options={})
       options.each { |k,v| self.send("#{k}=", v) if self.respond_to?("#{k}=") }
+    end
+
+    # Tells whether a client instance will use the username/password credentials
+    # @return [Boolean] whether the client will use username/password
+    def allow_password_credentials?
+      allow_password_credentials=='true' && !username.nil? && !password.nil?
     end
 
     # Retrieves the access token as a string
@@ -156,7 +167,7 @@ module G5AuthenticationClient
         OAuth2::AccessToken.new(oauth_client, access_token)
       elsif authorization_code
         oauth_client.auth_code.get_token(authorization_code, redirect_uri: redirect_uri)
-      elsif username && password
+      elsif allow_password_credentials?
         oauth_client.password.get_token(username,password)
       else
         raise "Insufficient credentials for access token.  Supply a username/password or authentication code"
