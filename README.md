@@ -315,7 +315,7 @@ G5AuthenticationClient::Client.new.me
 7. Create new Pull Request
 
 If you find bugs, have feature requests or questions, please
-[file an issue](https://github.com/g5search/g5_authentication_client/issues).
+[file an issue](https://github.com/G5/g5_authentication_client/issues).
 
 ### Running the specs ###
 

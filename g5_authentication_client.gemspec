@@ -4,11 +4,11 @@ require "g5_authentication_client/version"
 Gem::Specification.new do |s|
   s.name        = "g5_authentication_client"
   s.version     = G5AuthenticationClient::VERSION
-  s.authors     = ["g5"]
-  s.email       = ["engineering@g5searchmarketing.com"]
-  s.homepage    = "http://getg5.com"
-  s.summary     = %q{client for g5 OAuth provider}
-  s.description = %q{client for g5 OAuth provider}
+  s.authors     = ["Rob Revels", "Maeve Revels"]
+  s.email       = ["rob.revels@getg5.com", "maeve.revels@getg5.com"]
+  s.homepage    = "https://github.com/G5/g5_authentication_client"
+  s.summary     = "Client for the G5 Auth service"
+  s.description = "Client for the G5 Auth service"
 
   s.rubyforge_project = "g5_authentication_client"
 
