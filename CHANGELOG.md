@@ -1,3 +1,7 @@
+## v0.2.0 (2014-03-10)
+
+* First open source release to [RubyGems](http://rubygems.org/)
+
 ## v0.1.5 (2014-03-07)
 
 * Add allow_password_credentials flag to determine whether client instances
