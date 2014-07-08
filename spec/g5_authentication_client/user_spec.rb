@@ -1,14 +1,18 @@
 require 'spec_helper'
 
 describe G5AuthenticationClient::User do
-  subject { user }
-  let(:user){G5AuthenticationClient::User.new(attributes)}
+  subject(:user) { G5AuthenticationClient::User.new(attributes) }
 
   let(:attributes) do
-    {email: email,
-    password: password,
-    password_confirmation: password_confirmation,
-    id: id
+    { email: email,
+      password: password,
+      password_confirmation: password_confirmation,
+      id: id,
+      first_name: first_name,
+      last_name: last_name,
+      title: title,
+      organization_name: organization_name,
+      phone_number: phone_number
     }
   end
 
@@ -16,21 +20,69 @@ describe G5AuthenticationClient::User do
   let(:password) { 'foobarbaz' }
   let(:password_confirmation) { 'notamatch' }
   let(:id) {1}
+  let(:first_name) { 'Joe' }
+  let(:last_name) { 'Person' }
+  let(:organization_name) { 'Things, Inc.' }
+  let(:phone_number) { '8675309123' }
+  let(:title) { 'Developer' }
 
   context 'with default initialization' do
     let(:attributes){}
 
-    its(:email) { should be_nil}
-    its(:password) { should be_nil}
-    its(:id){ should be_nil}
-    its(:password_confirmation) { should be_nil }
+    it 'should have nil email' do
+      expect(user.email).to be_nil
+    end
+
+    it 'should have nil password' do
+      expect(user.password).to be_nil
+    end
+
+    it 'should have nil id ' do
+      expect(user.id).to be_nil
+    end
+
+    it 'should have nil password_confirmation' do
+      expect(user.password_confirmation).to be_nil
+    end
   end
 
   context 'with full initialization' do
-    its(:email) { should == email }
-    its(:password){ should == password }
-    its(:password_confirmation) { should == password_confirmation }
-    its(:id) { should == id}
+
+    it 'should have correct email' do
+      expect(user.email).to eq(email)
+    end
+
+    it 'should have correct password' do
+      expect(user.password).to eq(password)
+    end
+
+    it 'should have correct password_confirmation' do
+      expect(user.password_confirmation).to eq(password_confirmation)
+    end
+
+    it 'should have correct id' do
+      expect(user.id).to eq(id)
+    end
+
+    it 'should have correct first_name' do
+      expect(user.first_name).to eq(first_name)
+    end
+
+    it 'should have correct last_name' do
+      expect(user.last_name).to eq(last_name)
+    end
+
+    it 'should have correct title' do
+      expect(user.title).to eq(title)
+    end
+
+    it 'should have correct phone_number' do
+      expect(user.phone_number).to eq(phone_number)
+    end
+
+    it 'should have correct organization_name' do
+      expect(user.organization_name).to eq(organization_name)
+    end
   end
 
   describe '#validate!' do
@@ -62,6 +114,46 @@ describe G5AuthenticationClient::User do
 
     context 'without password_confirmation' do
       let(:password_confirmation) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'without first_name' do
+      let(:first_name) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'without last_name' do
+      let(:last_name) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'without title' do
+      let(:title) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'without phone_number' do
+      let(:phone_number) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'without organization_name' do
+      let(:organization_name) {}
 
       it 'should not raise an error' do
         expect { validate! }.to_not raise_error

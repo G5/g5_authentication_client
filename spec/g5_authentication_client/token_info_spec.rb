@@ -1,7 +1,7 @@
 require 'spec_helper'
 
 describe G5AuthenticationClient::TokenInfo do
-  subject { token_info }
+  subject(:token) { token_info }
   let(:token_info) { described_class.new(attributes) }
 
   let(:attributes) do
@@ -21,16 +21,38 @@ describe G5AuthenticationClient::TokenInfo do
   context 'with default initialization' do
     let(:attributes) {}
 
-    its(:resource_owner_id) { should be_nil }
-    its(:scopes) { should be_empty }
-    its(:expires_in_seconds) { should be_nil }
-    its(:application_uid) { should be_nil }
+    it 'should have nil resource_owner_id' do
+      expect(token.resource_owner_id).to be_nil
+    end
+
+    it 'should have nil scopes' do
+      expect(token.scopes).to be_empty
+    end
+
+    it 'should have nil expires_in_seconds' do
+      expect(token.expires_in_seconds).to be_nil
+    end
+
+    it 'should have nil application_uid' do
+      expect(token.application_uid).to be_nil
+    end
   end
 
   context 'with full initialization' do
-    its(:resource_owner_id) { should == resource_owner_id.to_s }
-    its(:scopes) { should == scopes }
-    its(:expires_in_seconds) { should == expires_in_seconds.to_i }
-    its(:application_uid) { should == application_uid }
+    it 'should have resource_owner_id' do
+      expect(token.resource_owner_id).to eq(resource_owner_id.to_s)
+    end
+
+    it 'should have scopes' do
+      expect(token.scopes).to eq(scopes)
+    end
+
+    it 'should have expires_in_seconds' do
+      expect(token.expires_in_seconds).to eq(expires_in_seconds.to_i)
+    end
+
+    it 'should have application_uid' do
+      expect(token.application_uid).to eq(application_uid)
+    end
   end
 end

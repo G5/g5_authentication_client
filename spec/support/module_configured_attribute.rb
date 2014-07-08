@@ -20,18 +20,26 @@ shared_examples_for 'a module configured attribute' do |attribute_name,default_v
             end
           end
 
-          its(attribute_name){ should == configured_value }
+          it "should have correct #{attribute_name}" do
+            expect(subject.send(attribute_name)).to eq(configured_value)
+          end
+
         end
 
         context 'without module configured #{attribute_name}' do
-          its(attribute_name){ should == default_value }
+
+          it "should have correct #{attribute_name}" do
+            expect(subject.send(attribute_name)).to eq(default_value)
+          end
         end
       end
 
       context 'with new #{attribute_name.to_s}' do
         let(:new_value){ 'userdude' }
 
-        its(attribute_name){ should == new_value }
+        it "should have correct #{attribute_name}" do
+          expect(subject.send(attribute_name)).to eq(new_value)
+        end
       end
     end
 end
