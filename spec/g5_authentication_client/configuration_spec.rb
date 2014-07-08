@@ -1,13 +1,11 @@
 require 'spec_helper'
 
 describe G5AuthenticationClient::Configuration do
-  let(:test_module) do
+  subject(:test_module) do
     module TestModule
       extend G5AuthenticationClient::Configuration
     end
   end
-
-  subject { test_module }
 
   let(:logger) { double() }
   let(:username) {'username'}
@@ -19,23 +17,63 @@ describe G5AuthenticationClient::Configuration do
   let(:authorization_code){ 'code' }
   let(:access_token) { 'access_token_test' }
   let(:allow_password_credentials) { 'false' }
+  let(:first_name) { 'Joe' }
+  let(:last_name) { 'Person' }
+  let(:organization_name) { 'Things, Inc.' }
+  let(:phone_number) { '8675309123' }
+  let(:title) { 'Developer' }
 
   after { test_module.reset }
 
-  it { should respond_to(:configure) }
+  it 'should respond to configure' do
+    expect(test_module).to respond_to(:configure)
+  end
 
   context 'with default configuration' do
-    it { should_not be_debug }
-    its(:logger) { should be_an_instance_of(Logger) }
-    its(:username) {should be_nil}
-    its(:password) {should be_nil}
-    its(:client_id) {should == G5AuthenticationClient::DEFAULT_CLIENT_ID}
-    its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
-    its(:redirect_uri) {should == G5AuthenticationClient::DEFAULT_REDIRECT_URI}
-    its(:endpoint){should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-    its(:authorization_code){ should be_nil }
-    its(:access_token) { should be_nil }
-    its(:allow_password_credentials) { should eq('true') }
+
+    it 'should not be debug' do
+      expect(test_module.debug?).to be false
+    end
+
+    it 'should have a logger' do
+      expect(test_module.logger).to be_instance_of(Logger)
+    end
+
+    it 'should have nil username' do
+      expect(test_module.username).to be_nil
+    end
+
+    it 'should have nil password' do
+      expect(test_module.password).to be_nil
+    end
+
+    it 'should have default client id' do
+      expect(test_module.client_id).to eq(G5AuthenticationClient::DEFAULT_CLIENT_ID)
+    end
+
+    it 'should have default client_secret' do
+      expect(test_module.client_secret).to eq(G5AuthenticationClient::DEFAULT_CLIENT_SECRET)
+    end
+
+    it 'should have default redirect_uri' do
+      expect(test_module.redirect_uri).to eq(G5AuthenticationClient::DEFAULT_REDIRECT_URI)
+    end
+
+    it 'should have default endpoint' do
+      expect(test_module.endpoint).to eq(G5AuthenticationClient::DEFAULT_ENDPOINT)
+    end
+
+    it 'should have nil authorization_code' do
+      expect(test_module.authorization_code).to be_nil
+    end
+
+    it 'should have nil access_token' do
+      expect(test_module.access_token).to be_nil
+    end
+
+    it 'should allow password credentials' do
+      expect(test_module.allow_password_credentials).to eq(G5AuthenticationClient::DEFAULT_ALLOW_PASSWORD_CREDENTIALS)
+    end
   end
 
   context 'with environment variable configuration' do
@@ -44,8 +82,8 @@ describe G5AuthenticationClient::Configuration do
       ENV['G5_AUTH_CLIENT_SECRET'] = client_secret
       ENV['G5_AUTH_REDIRECT_URI'] = redirect_uri
       ENV['G5_AUTH_ENDPOINT'] = endpoint
-      ENV['G5_AUTH_USERNAME'] = 'foo'
-      ENV['G5_AUTH_ALLOW_PASSWORD_CREDENTIALS'] = 'false'
+      ENV['G5_AUTH_USERNAME'] = new_username
+      ENV['G5_AUTH_ALLOW_PASSWORD_CREDENTIALS'] = new_allow_password_credentials
     end
 
     after do
@@ -55,22 +93,58 @@ describe G5AuthenticationClient::Configuration do
       ENV['G5_AUTH_ENDPOINT'] = nil
     end
 
-    it { should_not be_debug }
-    its(:logger) { should be_an_instance_of(Logger) }
-    its(:username) { should eq('foo')}
-    its(:password) { should be_nil }
-    its(:client_id) { should == client_id }
-    its(:client_secret) { should == client_secret }
-    its(:redirect_uri) { should == redirect_uri }
-    its(:endpoint) { should == endpoint }
-    its(:authorization_code) { should be_nil }
-    its(:access_token) { should be_nil }
-    its(:allow_password_credentials) { should == allow_password_credentials }
+    let(:new_username) { 'foo' }
+
+    let(:new_allow_password_credentials) { 'false' }
+
+    it 'should not be debug' do
+      expect(test_module.debug?).to be false
+    end
+
+    it 'should have a logger' do
+      expect(test_module.logger).to be_instance_of(Logger)
+    end
+
+    it 'should have username' do
+      expect(test_module.username).to eq(new_username)
+    end
+
+    it 'should have nil password' do
+      expect(test_module.password).to be_nil
+    end
+
+    it 'should have default client id' do
+      expect(test_module.client_id).to eq(client_id)
+    end
+
+    it 'should have default client_secret' do
+      expect(test_module.client_secret).to eq(client_secret)
+    end
+
+    it 'should have default redirect_uri' do
+      expect(test_module.redirect_uri).to eq(redirect_uri)
+    end
+
+    it 'should have default endpoint' do
+      expect(test_module.endpoint).to eq(endpoint)
+    end
+
+    it 'should have nil authorization_code' do
+      expect(test_module.authorization_code).to be_nil
+    end
+
+    it 'should have nil access_token' do
+      expect(test_module.access_token).to be_nil
+    end
+
+    it 'should not allow password credentials' do
+      expect(test_module.allow_password_credentials).to eq(new_allow_password_credentials)
+    end
 
   end
 
   describe '.configure' do
-    subject { test_module.configure(&config_block) }
+    subject(:configure) { test_module.configure(&config_block) }
 
     context 'with full configuration' do
       let(:config_block) do
@@ -89,41 +163,107 @@ describe G5AuthenticationClient::Configuration do
         end
       end
 
-      it { should == test_module }
-      it { should be_debug }
-      its(:logger) { should == logger }
-      its(:username){ should == username }
-      its(:password){ should == password }
-      its(:client_id){ should == client_id }
-      its(:client_secret){ should == client_secret }
-      its(:redirect_uri){ should == redirect_uri}
-      its(:endpoint){ should == endpoint}
-      its(:authorization_code){ should == authorization_code}
-      its(:access_token) { should == access_token }
-      its(:allow_password_credentials) { should == allow_password_credentials }
+      it 'should be debug' do
+        expect(configure.debug?).to be true
+      end
+
+      it 'should have a logger' do
+        expect(configure.logger).to eq(logger)
+      end
+
+      it 'should have username' do
+        expect(configure.username).to eq(username)
+      end
+
+      it 'should have the correct password' do
+        expect(configure.password).to eq(password)
+      end
+
+      it 'should have the correct client id' do
+        expect(configure.client_id).to eq(client_id)
+      end
+
+      it 'should have the correct client_secret' do
+        expect(configure.client_secret).to eq(client_secret)
+      end
+
+      it 'should have the correct redirect_uri' do
+        expect(configure.redirect_uri).to eq(redirect_uri)
+      end
+
+      it 'should have the correct endpoint' do
+        expect(configure.endpoint).to eq(endpoint)
+      end
+
+      it 'should have the correct authorization_code' do
+        expect(configure.authorization_code).to eq(authorization_code)
+      end
+
+      it 'should have the correct access_token' do
+        expect(configure.access_token).to eq(access_token)
+      end
+
+      it 'should have the correct value for allowing password credentials' do
+        expect(configure.allow_password_credentials).to eq(allow_password_credentials)
+      end
     end
 
     context 'with partial configuration' do
       let(:config_block) do
         lambda do |config|
-          config.debug = true
-          config.username = 'foo'
-          config.password = 'bar'
+          config.debug = new_debug
+          config.username = new_username
+          config.password = new_password
         end
       end
 
-      it { should == test_module }
+      let(:new_username) { 'foo' }
+      let(:new_password) { 'bar' }
+      let(:new_debug) { true }
 
-      it { should be_debug }
-      its(:logger) { should be_an_instance_of(Logger) }
-      its(:username) { should == 'foo' }
-      its(:password) { should == 'bar' }
-      its(:client_id){ should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
-      its(:client_secret){ should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
-      its(:redirect_uri){ should == G5AuthenticationClient::DEFAULT_REDIRECT_URI }
-      its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-      its(:authorization_code){ should be_nil}
-      its(:access_token) { should be_nil }
+      it 'should be debug' do
+        expect(configure.debug?).to be new_debug
+      end
+
+      it 'should have a logger' do
+        expect(configure.logger).to be_instance_of(Logger)
+      end
+
+      it 'should have username' do
+        expect(configure.username).to eq(new_username)
+      end
+
+      it 'should have the correct password' do
+        expect(configure.password).to eq(new_password)
+      end
+
+      it 'should have default client id' do
+        expect(test_module.client_id).to eq(G5AuthenticationClient::DEFAULT_CLIENT_ID)
+      end
+
+      it 'should have default client_secret' do
+        expect(test_module.client_secret).to eq(G5AuthenticationClient::DEFAULT_CLIENT_SECRET)
+      end
+
+      it 'should have default redirect_uri' do
+        expect(test_module.redirect_uri).to eq(G5AuthenticationClient::DEFAULT_REDIRECT_URI)
+      end
+
+      it 'should have default endpoint' do
+        expect(test_module.endpoint).to eq(G5AuthenticationClient::DEFAULT_ENDPOINT)
+      end
+
+      it 'should have nil authorization_code' do
+        expect(configure.authorization_code).to be_nil
+      end
+
+      it 'should have nil access_token' do
+        expect(configure.access_token).to be_nil
+      end
+
+      it 'should not allow password credentials' do
+        expect(configure.allow_password_credentials).to eq(G5AuthenticationClient::DEFAULT_ALLOW_PASSWORD_CREDENTIALS)
+      end
 
       context 'when there is an env variable default' do
 
@@ -137,13 +277,16 @@ describe G5AuthenticationClient::Configuration do
           ENV['G5_AUTH_ACCESS_TOKEN']=nil
         end
 
-        its(:access_token) { should eq(access_token_value) }
-
+        it 'should have correct access_token' do
+          expect(configure.access_token).to eq(access_token_value)
+        end
       end
     end
   end
 
-  it { should respond_to(:reset) }
+  it 'should reset' do
+    expect(test_module).to respond_to(:reset)
+  end
 
   describe '.reset' do
     before do
@@ -162,18 +305,51 @@ describe G5AuthenticationClient::Configuration do
       end
     end
 
-    subject { test_module.reset;test_module }
+    subject(:reset) { test_module.reset;test_module }
 
-    its(:username) {should be_nil}
-    its(:password) {should be_nil}
-    its(:endpoint) {should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-    its(:client_id) {should == G5AuthenticationClient::DEFAULT_CLIENT_ID}
-    its(:client_secret) {should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET}
-    its(:redirect_uri) {should == G5AuthenticationClient::DEFAULT_REDIRECT_URI}
-    its(:debug?){ should be_false }
-    its(:logger){ should be_instance_of(Logger) }
-    its(:access_token) { should be_nil }
-    its(:allow_password_credentials) { should == 'true' }
+    it 'should not be debug' do
+      expect(reset.debug?).to be false
+    end
+
+    it 'should have a logger' do
+      expect(reset.logger).to be_instance_of(Logger)
+    end
+
+    it 'should have nil username' do
+      expect(reset.username).to be_nil
+    end
+
+    it 'should have nil password' do
+      expect(reset.password).to be_nil
+    end
+
+    it 'should have default client id' do
+      expect(reset.client_id).to eq(G5AuthenticationClient::DEFAULT_CLIENT_ID)
+    end
+
+    it 'should have default client_secret' do
+      expect(reset.client_secret).to eq(G5AuthenticationClient::DEFAULT_CLIENT_SECRET)
+    end
+
+    it 'should have default redirect_uri' do
+      expect(reset.redirect_uri).to eq(G5AuthenticationClient::DEFAULT_REDIRECT_URI)
+    end
+
+    it 'should have default endpoint' do
+      expect(reset.endpoint).to eq(G5AuthenticationClient::DEFAULT_ENDPOINT)
+    end
+
+    it 'should have nil authorization_code' do
+      expect(reset.authorization_code).to be_nil
+    end
+
+    it 'should have nil access_token' do
+      expect(reset.access_token).to be_nil
+    end
+
+    it 'should allow password credentials' do
+      expect(reset.allow_password_credentials).to eq(G5AuthenticationClient::DEFAULT_ALLOW_PASSWORD_CREDENTIALS)
+    end
   end
 
   describe '.options' do
@@ -193,18 +369,21 @@ describe G5AuthenticationClient::Configuration do
       end
     end
 
-    subject { test_module.options }
+    subject(:options) { test_module.options }
 
-    its([:debug]) { should be_true }
-    its([:logger]) { should == logger }
-    its([:username]) { should == username } 
-    its([:password]) { should == password }
-    its([:endpoint]) { should == endpoint }
-    its([:client_id]) { should == client_id }
-    its([:client_secret]) { should == client_secret }
-    its([:redirect_uri]) { should == redirect_uri}
-    its([:authorization_code]){ should == authorization_code }
-    its([:access_token]) { should == access_token }
-    its([:allow_password_credentials]) { should == allow_password_credentials }
+    it "should have correct options" do
+      options.should include(
+        debug: 'true',
+        username: username,
+        password: password,
+        endpoint: endpoint,
+        client_id: client_id,
+        client_secret: client_secret,
+        redirect_uri: redirect_uri,
+        authorization_code: authorization_code,
+        access_token: access_token,
+        allow_password_credentials: allow_password_credentials
+      )
+    end
   end
 end

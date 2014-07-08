@@ -29,22 +29,60 @@ describe G5AuthenticationClient::User do
   context 'with default initialization' do
     let(:attributes){}
 
-    its(:email) { should be_nil}
-    its(:password) { should be_nil}
-    its(:id){ should be_nil}
-    its(:password_confirmation) { should be_nil }
+    it 'should have nil email' do
+      expect(user.email).to be_nil
+    end
+
+    it 'should have nil password' do
+      expect(user.password).to be_nil
+    end
+
+    it 'should have nil id ' do
+      expect(user.id).to be_nil
+    end
+
+    it 'should have nil password_confirmation' do
+      expect(user.password_confirmation).to be_nil
+    end
   end
 
   context 'with full initialization' do
-    its(:email) { should == email }
-    its(:password){ should == password }
-    its(:password_confirmation) { should == password_confirmation }
-    its(:id) { should == id}
-    its(:first_name) { should eq(first_name) }
-    its(:last_name) { should eq(last_name) }
-    its(:organization_name) { should eq(organization_name) }
-    its(:phone_number) { should eq(phone_number) }
-    its(:title) { should eq(title) }
+
+    it 'should have correct email' do
+      expect(user.email).to eq(email)
+    end
+
+    it 'should have correct password' do
+      expect(user.password).to eq(password)
+    end
+
+    it 'should have correct password_confirmation' do
+      expect(user.password_confirmation).to eq(password_confirmation)
+    end
+
+    it 'should have correct id' do
+      expect(user.id).to eq(id)
+    end
+
+    it 'should have correct first_name' do
+      expect(user.first_name).to eq(first_name)
+    end
+
+    it 'should have correct last_name' do
+      expect(user.last_name).to eq(last_name)
+    end
+
+    it 'should have correct title' do
+      expect(user.title).to eq(title)
+    end
+
+    it 'should have correct phone_number' do
+      expect(user.phone_number).to eq(phone_number)
+    end
+
+    it 'should have correct organization_name' do
+      expect(user.organization_name).to eq(organization_name)
+    end
   end
 
   describe '#validate!' do

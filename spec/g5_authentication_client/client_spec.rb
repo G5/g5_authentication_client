@@ -2,11 +2,9 @@ require 'spec_helper'
 require 'json'
 
 describe G5AuthenticationClient::Client do
-  subject { client }
+  subject(:client) { G5AuthenticationClient::Client.new(options) }
 
   after { G5AuthenticationClient.reset }
-
-  let(:client) { G5AuthenticationClient::Client.new(options) }
 
   let(:debug) { true }
   let(:logger) { double() }
@@ -53,29 +51,63 @@ describe G5AuthenticationClient::Client do
   let(:returned_user){{id: user_id,email: email}}
 
   context 'with default configuration' do
-    let(:client) { G5AuthenticationClient::Client.new }
+    subject(:client) { G5AuthenticationClient::Client.new }
 
-    it { should_not be_debug }
-    its(:logger) { should be_an_instance_of(Logger) }
-    its(:username) { should be_nil }
-    its(:password) { should be_nil }
-    its(:client_id) { should == G5AuthenticationClient::DEFAULT_CLIENT_ID }
-    its(:client_secret) { should == G5AuthenticationClient::DEFAULT_CLIENT_SECRET }
-    its(:redirect_uri) { should == G5AuthenticationClient::DEFAULT_REDIRECT_URI }
-    its(:endpoint){ should == G5AuthenticationClient::DEFAULT_ENDPOINT}
-    its(:authorization_code){ should be_nil}
-    its(:access_token) { should be_nil }
-    its(:allow_password_credentials) { should == 'true'}
+    it 'should not be debug' do
+      expect(client.debug?).to_not be true
+    end
+
+    it 'should have a logger' do
+      expect(client.logger).to be_an_instance_of(Logger)
+    end
+
+    it 'should not have a user name' do
+      expect(client.username).to be_nil
+    end
+
+    it 'should not have a password' do
+      expect(client.password).to be_nil
+    end
+
+    it 'should have default client id' do
+      expect(client.client_id).to eq(G5AuthenticationClient::DEFAULT_CLIENT_ID)
+    end
+
+    it 'should have default client secret' do
+      expect(client.client_secret).to eq(G5AuthenticationClient::DEFAULT_CLIENT_SECRET)
+    end
+
+    it 'should have default redirect uri' do
+      expect(client.redirect_uri).to eq(G5AuthenticationClient::DEFAULT_REDIRECT_URI)
+    end
+
+    it 'should have default endpoint' do
+      expect(client.endpoint).to eq(G5AuthenticationClient::DEFAULT_ENDPOINT)
+    end
+
+    it 'should have nil authorization code' do
+      expect(client.authorization_code).to be_nil
+    end
+
+    it 'should have nil access token' do
+      expect(client.access_token).to be_nil
+    end
+
+    it 'should have default allow_password_credentials' do
+      expect(client.allow_password_credentials).to eq('true')
+    end
   end
 
   context 'with non-default configuration' do
-    it { should be_debug }
-    its(:logger) { should == logger }
+
+    it 'should have debug' do
+      expect(client.debug).to be true
+    end
 
     describe '#debug=' do
       subject { client.debug = new_debug }
 
-       context 'with nil debug' do
+      context 'with nil debug' do
         let(:new_debug) { nil }
 
         context 'when there is a debug flag configured at the top-level module' do
@@ -135,37 +167,58 @@ describe G5AuthenticationClient::Client do
       end
     end
 
-    its(:username) { should == username }
+    it 'should have username' do
+      expect(client.username).to eq(username)
+    end
 
     it_should_behave_like 'a module configured attribute',:username, nil
 
-    its(:password) { should == password }
+    it 'should have password' do
+      expect(client.password).to eq(password)
+    end
 
     it_should_behave_like 'a module configured attribute', :password, nil
 
-    its(:endpoint){ should == endpoint}
+    it 'should have endpoint' do
+      expect(client.endpoint).to eq(endpoint)
+    end
 
     it_should_behave_like 'a module configured attribute', :endpoint,G5AuthenticationClient::DEFAULT_ENDPOINT
 
-    its(:client_id) { should == client_id}
+    it 'should have client_id' do
+      expect(client.client_id).to eq(client_id)
+    end
 
     it_should_behave_like 'a module configured attribute', :client_id, G5AuthenticationClient::DEFAULT_CLIENT_ID
 
-    its(:client_secret) {should ==client_secret}
+    it 'should have client_secret' do
+      expect(client.client_secret).to eq(client_secret)
+    end
 
     it_should_behave_like 'a module configured attribute', :client_secret, G5AuthenticationClient::DEFAULT_CLIENT_SECRET
 
-    its(:redirect_uri) {should ==redirect_uri}
+    it 'should have redirect_uri' do
+      expect(client.redirect_uri).to eq(redirect_uri)
+    end
 
     it_should_behave_like 'a module configured attribute', :redirect_uri, G5AuthenticationClient::DEFAULT_REDIRECT_URI
 
-    its(:authorization_code) { should == authorization_code}
+    it 'should have authorization_code' do
+      expect(client.authorization_code).to eq(authorization_code)
+    end
+
     it_should_behave_like 'a module configured attribute', :authorization_code, nil
 
-    its(:access_token) { should == access_token_value }
+    it 'should have access_token' do
+      expect(client.access_token).to eq(access_token)
+    end
+
     it_should_behave_like 'a module configured attribute', :access_token, nil
 
-    its(:allow_password_credentials) { should == allow_password_credentials }
+    it 'should have allow_password_credentials' do
+      expect(client.allow_password_credentials).to eq(allow_password_credentials)
+    end
+
     it_should_behave_like 'a module configured attribute', :allow_password_credentials, 'true'
   end
 
@@ -178,7 +231,7 @@ describe G5AuthenticationClient::Client do
       context 'with non-nil username and password' do
 
         it 'should be true' do
-          expect(subject).to be_true
+          expect(subject).to be true
         end
       end
 
@@ -186,7 +239,7 @@ describe G5AuthenticationClient::Client do
         let(:username) {}
 
         it 'should be false' do
-          expect(subject).to be_false
+          expect(subject).to be false
         end
       end
 
@@ -194,7 +247,7 @@ describe G5AuthenticationClient::Client do
         let(:password) {}
 
         it 'should be false' do
-          expect(subject).to be_false
+          expect(subject).to be false
         end
       end
     end
@@ -203,7 +256,7 @@ describe G5AuthenticationClient::Client do
       let(:allow_password_credentials) {'false'}
 
       it 'should be false' do
-        expect(subject).to be_false
+        expect(subject).to be false
       end
     end
   end
