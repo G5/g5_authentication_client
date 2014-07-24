@@ -297,6 +297,30 @@ describe G5AuthenticationClient::Client do
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
   end
 
+  describe '#find_user_by_email' do
+    subject(:find_user_by_email) { client.find_user_by_email(email) }
+
+    let(:response_body) { [returned_user].to_json}
+
+    before do
+      stub_request(:get, /#{endpoint}\/v1\/users/).
+        with(query: {'email' => email}, headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: response_body,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    context 'when there is no user' do
+      let(:response_body) { [].to_json }
+
+      it 'should return nil' do
+        expect(find_user_by_email).to be_nil
+      end
+    end
+
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+  end
+
   describe '#get_user' do
     subject(:get_user) { client.get_user(user_id) }
 

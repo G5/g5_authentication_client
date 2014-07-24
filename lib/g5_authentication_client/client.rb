@@ -115,6 +115,18 @@ module G5AuthenticationClient
       User.new(response.parsed)
     end
 
+    # Find a user by email
+    # @param [String] email address
+    # @return [G5AuthenticationClient::User]
+    def find_user_by_email(email)
+      response = oauth_access_token.get('/v1/users', params: { email: email })
+      user = response.parsed.first
+      if user
+        user=User.new(user)
+      end
+      user
+    end
+
     # Get a user
     # @param [Integer] id the user ID in the remote service
     # @return [G5AuthenticationClient::User]
