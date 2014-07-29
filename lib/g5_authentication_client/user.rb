@@ -54,5 +54,9 @@ module G5AuthenticationClient
       validate!
       raise ArgumentError.new("Password required for new user.") unless !password.nil?
     end
+
+    def to_hash
+      super.reject{ |k, v| k == 'id' }
+    end
   end
 end
