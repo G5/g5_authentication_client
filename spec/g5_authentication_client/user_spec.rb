@@ -209,8 +209,8 @@ describe G5AuthenticationClient::User do
       expect(to_hash['phone_number']).to eq(phone_number)
     end
 
-    it 'should not have an id' do
-      expect(to_hash).to_not include('id')
+    it 'should have an id' do
+      expect(to_hash['id']).to eq(id)
     end
   end
 end
