@@ -1,3 +1,6 @@
+## v0.2.3 (2014-07-31)
+* remove id from body in create/update user
+
 ## v0.2.0 (2014-03-10)
 
 * First open source release to [RubyGems](http://rubygems.org/)
