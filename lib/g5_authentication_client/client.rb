@@ -98,7 +98,7 @@ module G5AuthenticationClient
     def create_user(options={})
       user=User.new(options)
       user.validate_for_create!
-      response=oauth_access_token.post('/v1/users', params: {user: user.to_hash})
+      response=oauth_access_token.post('/v1/users', body: user_hash(user.to_hash))
       User.new(response.parsed)
     end
 
@@ -111,7 +111,7 @@ module G5AuthenticationClient
     def update_user(options={})
       user=User.new(options)
       user.validate!
-      response=oauth_access_token.put("/v1/users/#{user.id}", params: {user: user.to_hash})
+      response=oauth_access_token.put("/v1/users/#{user.id}", body: user_hash(user.to_hash))
       User.new(response.parsed)
     end
 
@@ -170,6 +170,11 @@ module G5AuthenticationClient
     end
 
     private
+
+    def user_hash(h)
+      { user: h.reject{ |k,v| k == 'id' } }
+    end
+
     def oauth_client
       OAuth2::Client.new(client_id, client_secret, site: endpoint)
     end

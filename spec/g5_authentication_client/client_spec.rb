@@ -45,6 +45,19 @@ describe G5AuthenticationClient::Client do
     id: user_id}
   end
 
+  let(:new_user_request) do
+    {
+      "email"=>email,
+      "first_name"=>"",
+      "last_name"=>"",
+      "organization_name"=>"",
+      "password"=>"#{password}x",
+      "password_confirmation"=>"",
+      "phone_number"=>"",
+      "title"=>""
+    }
+  end
+
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
   let(:user_id){1}
@@ -273,8 +286,8 @@ describe G5AuthenticationClient::Client do
     subject(:create_user) { client.create_user(new_user_options) }
 
     before do
-      stub_request(:post, /#{endpoint}\/v1\/users/).
-        with(headers: {'Authorization' => auth_header_value}).
+      stub_request(:post, "#{endpoint}/v1/users").
+        with(:body => {"user"=>new_user_request}, headers: {'Authorization' => auth_header_value}).
         to_return(status: 200,
                   body: returned_user.to_json,
                   headers: {'Content-Type' => 'application/json'})
@@ -288,7 +301,7 @@ describe G5AuthenticationClient::Client do
 
     before do
       stub_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
-        with(headers: {'Authorization' => auth_header_value}).
+        with(:body => { "user" => new_user_request }, headers: {'Authorization' => auth_header_value}).
         to_return(status: 200,
                   body: returned_user.to_json,
                   headers: {'Content-Type' => 'application/json'})

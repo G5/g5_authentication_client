@@ -181,4 +181,36 @@ describe G5AuthenticationClient::User do
       end
     end
   end
+
+  describe '#to_hash' do
+    subject(:to_hash) { user.to_hash }
+
+    it 'should have a first name' do
+      expect(to_hash['first_name']).to eq(first_name)
+    end
+
+    it 'should have a last name' do
+      expect(to_hash['last_name']).to eq(last_name)
+    end
+
+    it 'should have an email' do
+      expect(to_hash['email']).to eq(email)
+    end
+
+    it 'should have a title ' do
+      expect(to_hash['title']).to eq(title)
+    end
+
+    it 'should have an organization name' do
+      expect(to_hash['organization_name']).to eq(organization_name)
+    end
+
+    it 'should have an phone_number' do
+      expect(to_hash['phone_number']).to eq(phone_number)
+    end
+
+    it 'should have an id' do
+      expect(to_hash['id']).to eq(id)
+    end
+  end
 end

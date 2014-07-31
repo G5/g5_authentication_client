@@ -54,5 +54,6 @@ module G5AuthenticationClient
       validate!
       raise ArgumentError.new("Password required for new user.") unless !password.nil?
     end
+
   end
 end
