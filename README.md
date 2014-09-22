@@ -38,6 +38,7 @@ environment variable (not all of these will be used concurrently!):
 * `G5_AUTH_USERNAME` - the username for the end user to authenticate as
 * `G5_AUTH_PASSWORD` - the password for the end user to authenticate as
 * `G5_AUTH_ACCESS_TOKEN` - a valid OAuth 2.0 access token (note that tokens do expire)
+* `G5_AUTH_ALLOW_PASSWORD_CREDENTIALS` - set to 'true' to use resource owner password credentials grant
 
 ### Module-level config ###
 
@@ -266,7 +267,11 @@ module-level configuration or environment variables for those:
 export G5_AUTH_CLIENT_ID='my-client-id'
 export G5_AUTH_CLIENT_SECRET='my-client-secret'
 export G5_AUTH_REDIRECT_URI='https://test.host/callback'
+export G5_AUTH_ALLOW_PASSWORD_CREDENTIALS='true'
 ```
+Warning:  setting G5_AUTH_ALLOW_PASSWORD_CREDENTIALS will cause all client instances
+to use the username/password specified in the absence of an access_token.  Usually, this
+will be used per instance.
 
 If you want to use a different username and password per request, then you
 should configure these on each client instance:
