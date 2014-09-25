@@ -372,7 +372,7 @@ describe G5AuthenticationClient::Configuration do
     subject(:options) { test_module.options }
 
     it "should have correct options" do
-      options.should include(
+      expect(options).to include(
         debug: 'true',
         username: username,
         password: password,

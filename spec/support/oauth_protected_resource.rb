@@ -50,7 +50,9 @@ shared_examples_for 'an oauth protected resource' do |resource_type|
                   headers: {'Content-Type' => 'application/json'})
     end
 
-    it { should be_an_instance_of resource_type }
+    it "should be an instance of the correct resource type" do
+      expect(subject).to be_an_instance_of resource_type
+    end
   end
 
   context 'when there is a username and password' do
@@ -76,6 +78,8 @@ shared_examples_for 'an oauth protected resource' do |resource_type|
                   headers: {'Content-Type' => 'application/json'})
     end
 
-    it { should be_an_instance_of resource_type }
+    it "should be an instance of the correct resource type" do
+      expect(subject).to be_an_instance_of resource_type
+    end
   end
 end
