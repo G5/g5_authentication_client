@@ -166,7 +166,7 @@ describe G5AuthenticationClient::Client do
         context 'when there is no logger configured at the top level' do
           it 'should change the value of the logger to the default' do
             expect { subject }.to change { client.logger }
-            client.logger.should be_an_instance_of(Logger)
+            expect(client.logger).to be_an_instance_of(Logger)
           end
         end
       end
