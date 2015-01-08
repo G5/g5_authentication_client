@@ -1,4 +1,10 @@
+## v0.3.0 (2015-01-08)
+
+* Add `G5AuthenticationClient::Client#list_users`
+  ([#22](https://github.com/G5/g5_authentication_client/pull/22))
+
 ## v0.2.3 (2014-07-31)
+
 * remove id from body in create/update user
 
 ## v0.2.0 (2014-03-10)
@@ -7,12 +13,12 @@
 
 ## v0.1.5 (2014-03-07)
 
-* Add allow_password_credentials flag to determine whether client instances
+* Add `allow_password_credentials` flag to determine whether client instances
 * will allow use of username/passwored attributes
 
 ## v0.1.4 (2014-03-06)
 
-* Change configure method namespace to g5_auth from g5_authentication_client
+* Change configure method namespace to `g5_auth` from `g5_authentication_client`
 
 ## v0.1.1 (2013-11-15)
 
