@@ -169,6 +169,13 @@ module G5AuthenticationClient
       auth_server_url.to_s
     end
 
+    # Return all users from the remote service
+    # @return [Array<G5AuthenticationClient::User>]
+    def list_users
+      response=oauth_access_token.get("/v1/users")
+      response.parsed.collect { |parsed_user| User.new(parsed_user) }
+    end
+
     private
 
     def user_hash(h)

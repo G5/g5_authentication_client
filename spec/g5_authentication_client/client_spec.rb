@@ -166,7 +166,7 @@ describe G5AuthenticationClient::Client do
         context 'when there is no logger configured at the top level' do
           it 'should change the value of the logger to the default' do
             expect { subject }.to change { client.logger }
-            client.logger.should be_an_instance_of(Logger)
+            expect(client.logger).to be_an_instance_of(Logger)
           end
         end
       end
@@ -421,5 +421,27 @@ describe G5AuthenticationClient::Client do
     end
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::TokenInfo
+  end
+
+  describe '#list_users' do
+    subject(:list_users) { client.list_users }
+
+    before do
+      stub_request(:get, /#{endpoint}\/v1\/users/).
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: [returned_user].to_json,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it 'should return one user' do
+      expect(list_users.size).to eq(1)
+    end
+
+    describe 'the first user' do
+      subject(:user) { list_users.first }
+
+      it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+    end
   end
 end

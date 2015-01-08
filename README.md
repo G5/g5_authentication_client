@@ -108,11 +108,18 @@ current_user = auth_client.me
 # => #<G5AuthenticationClient::User email="my.user@test.host" id=1>
 ```
 
-You can also retrieve informatino about any other user by ID:
+You can also retrieve information about any other user by ID:
 
 ```ruby
 user = auth_client.get_user(42)
 # => #<G5AuthenticationClient::User email="another.user@test.host" id=42>
+```
+
+You can list all users in the remote service:
+
+```ruby
+user = auth_client.list_users
+# => [#<G5AuthenticationClient::User email="another.user@test.host" id=42>, ... ]
 ```
 
 ### Retrieving token information ###

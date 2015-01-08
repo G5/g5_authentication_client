@@ -2,10 +2,10 @@ require 'spec_helper'
 
 describe G5AuthenticationClient do
   it "should have a version" do
-    subject::VERSION.should be
+    expect(subject::VERSION).to be
   end
 
-  it { should respond_to(:configure) }
-  it { should respond_to(:reset) }
-  it { should respond_to(:options) }
+  it { is_expected.to respond_to(:configure) }
+  it { is_expected.to respond_to(:reset) }
+  it { is_expected.to respond_to(:options) }
 end
