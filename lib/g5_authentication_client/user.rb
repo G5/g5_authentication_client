@@ -55,12 +55,19 @@ module G5AuthenticationClient
     #   @return [Array<G5AuthenticationClient::Role>]
     #   The user's roles. Not required to create a user.
     property :roles, default: [],
-      type: proc { |val| val.map { |r| G5AuthenticationClient::Role.new(r) } }
+      type: proc { |val| val.map { |r| Role.new(r) } },
+      validator: proc { |val| "User roles must be valid" if val && val.detect { |r| !r.valid? } }
 
     def validate_for_create!
       validate!
       raise ArgumentError.new("Password required for new user.") unless !password.nil?
     end
 
+    def to_hash
+      hash = super
+      # The auth API requires role_ids instead of roles for input
+      hash['role_ids'] = hash['roles'].map { |r| r['id'] }
+      hash.reject { |k,v| k == 'roles' }
+    end
   end
 end

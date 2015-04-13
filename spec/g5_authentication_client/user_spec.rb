@@ -177,6 +177,22 @@ describe G5AuthenticationClient::User do
         expect { validate! }.to_not raise_error
       end
     end
+
+    context 'without roles' do
+      let(:roles) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'with invalid roles' do
+      let(:role_id) {}
+
+      it 'should raise an error' do
+        expect { validate! }.to raise_error
+      end
+    end
   end
 
   describe '#validate_for_create!' do
@@ -229,6 +245,14 @@ describe G5AuthenticationClient::User do
 
     it 'should have an id' do
       expect(to_hash['id']).to eq(id)
+    end
+
+    it 'should have role_ids' do
+      expect(to_hash['role_ids']).to eq([role_id])
+    end
+
+    it 'should not have roles' do
+      expect(to_hash).to_not have_key('roles')
     end
   end
 end
