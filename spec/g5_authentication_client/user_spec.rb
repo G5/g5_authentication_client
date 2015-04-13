@@ -12,7 +12,8 @@ describe G5AuthenticationClient::User do
       last_name: last_name,
       title: title,
       organization_name: organization_name,
-      phone_number: phone_number
+      phone_number: phone_number,
+      roles: [{id: role_id, name: role_name}]
     }
   end
 
@@ -25,6 +26,8 @@ describe G5AuthenticationClient::User do
   let(:organization_name) { 'Things, Inc.' }
   let(:phone_number) { '8675309123' }
   let(:title) { 'Developer' }
+  let(:role_id) { 42 }
+  let(:role_name)  { 'Editor' }
 
   context 'with default initialization' do
     let(:attributes){}
@@ -44,10 +47,13 @@ describe G5AuthenticationClient::User do
     it 'should have nil password_confirmation' do
       expect(user.password_confirmation).to be_nil
     end
+
+    it 'should have empty roles' do
+      expect(user.roles).to be_empty
+    end
   end
 
   context 'with full initialization' do
-
     it 'should have correct email' do
       expect(user.email).to eq(email)
     end
@@ -82,6 +88,18 @@ describe G5AuthenticationClient::User do
 
     it 'should have correct organization_name' do
       expect(user.organization_name).to eq(organization_name)
+    end
+
+    it 'should have the correct number of roles' do
+      expect(user.roles.size).to eq(attributes[:roles].size)
+    end
+
+    it 'should have the correct role id' do
+      expect(user.roles.first.id).to eq(role_id)
+    end
+
+    it 'should have the correct role name' do
+      expect(user.roles.first.name).to eq(role_name)
     end
   end
 
