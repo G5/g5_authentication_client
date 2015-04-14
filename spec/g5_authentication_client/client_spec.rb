@@ -42,7 +42,8 @@ describe G5AuthenticationClient::Client do
   let(:new_user_options) do
     {email: email,
     password: "#{password}x",
-    id: user_id}
+    id: user_id,
+    roles: [{id: role_id, name: 'my_role'}]}
   end
 
   let(:new_user_request) do
@@ -54,13 +55,15 @@ describe G5AuthenticationClient::Client do
       "password"=>"#{password}x",
       "password_confirmation"=>"",
       "phone_number"=>"",
-      "title"=>""
+      "title"=>"",
+      "role_ids"=>[role_id.to_s]
     }
   end
 
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
   let(:user_id){1}
+  let(:role_id) { 42 }
   let(:returned_user){{id: user_id,email: email}}
 
   context 'with default configuration' do
