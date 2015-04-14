@@ -471,4 +471,18 @@ describe G5AuthenticationClient::Client do
       it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::Role
     end
   end
+
+  describe '#get_role' do
+    subject(:get_role) { client.get_role(role_id) }
+
+    before do
+      stub_request(:get, /#{endpoint}\/v1\/roles\/#{role_id}/).
+        with(headers: {'Authorization' => auth_header_value}).
+        to_return(status: 200,
+                  body: returned_role.to_json,
+                  headers: {'Content-Type' => 'application/json'})
+    end
+
+    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::Role
+  end
 end
