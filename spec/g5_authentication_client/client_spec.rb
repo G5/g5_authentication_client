@@ -43,7 +43,7 @@ describe G5AuthenticationClient::Client do
     {email: email,
     password: "#{password}x",
     id: user_id,
-    roles: [{id: role_id, name: role_name}]}
+    roles: [{name: role_name}]}
   end
 
   let(:new_user_request) do
@@ -56,17 +56,16 @@ describe G5AuthenticationClient::Client do
       "password_confirmation"=>"",
       "phone_number"=>"",
       "title"=>"",
-      "role_ids"=>[role_id.to_s]
+      "roles"=>["name"=>role_name]
     }
   end
 
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
   let(:user_id){1}
-  let(:role_id) { 42 }
   let(:role_name) { 'my_role' }
   let(:returned_user){{id: user_id,email: email,roles:[returned_role]}}
-  let(:returned_role) { {'id' => role_id, 'name' => role_name} }
+  let(:returned_role) { {'name' => role_name} }
 
   context 'with default configuration' do
     subject(:client) { G5AuthenticationClient::Client.new }
@@ -470,19 +469,5 @@ describe G5AuthenticationClient::Client do
 
       it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::Role
     end
-  end
-
-  describe '#get_role' do
-    subject(:get_role) { client.get_role(role_id) }
-
-    before do
-      stub_request(:get, /#{endpoint}\/v1\/roles\/#{role_id}/).
-        with(headers: {'Authorization' => auth_header_value}).
-        to_return(status: 200,
-                  body: returned_role.to_json,
-                  headers: {'Content-Type' => 'application/json'})
-    end
-
-    it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::Role
   end
 end

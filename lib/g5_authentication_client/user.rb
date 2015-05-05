@@ -62,12 +62,5 @@ module G5AuthenticationClient
       validate!
       raise ArgumentError.new("Password required for new user.") unless !password.nil?
     end
-
-    def to_hash
-      hash = super
-      # The auth API requires role_ids instead of roles for input
-      hash['role_ids'] = hash['roles'].map { |r| r['id'] }
-      hash.reject { |k,v| k == 'roles' }
-    end
   end
 end

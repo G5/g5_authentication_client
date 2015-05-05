@@ -13,7 +13,7 @@ describe G5AuthenticationClient::User do
       title: title,
       organization_name: organization_name,
       phone_number: phone_number,
-      roles: [{id: role_id, name: role_name}]
+      roles: [{name: role_name}]
     }
   end
 
@@ -26,7 +26,6 @@ describe G5AuthenticationClient::User do
   let(:organization_name) { 'Things, Inc.' }
   let(:phone_number) { '8675309123' }
   let(:title) { 'Developer' }
-  let(:role_id) { 42 }
   let(:role_name)  { 'Editor' }
 
   context 'with default initialization' do
@@ -92,10 +91,6 @@ describe G5AuthenticationClient::User do
 
     it 'should have the correct number of roles' do
       expect(user.roles.size).to eq(attributes[:roles].size)
-    end
-
-    it 'should have the correct role id' do
-      expect(user.roles.first.id).to eq(role_id)
     end
 
     it 'should have the correct role name' do
@@ -187,7 +182,7 @@ describe G5AuthenticationClient::User do
     end
 
     context 'with invalid roles' do
-      let(:role_id) {}
+      let(:role_name) {}
 
       it 'should raise an error' do
         expect { validate! }.to raise_error
@@ -247,12 +242,8 @@ describe G5AuthenticationClient::User do
       expect(to_hash['id']).to eq(id)
     end
 
-    it 'should have role_ids' do
-      expect(to_hash['role_ids']).to eq([role_id])
-    end
-
-    it 'should not have roles' do
-      expect(to_hash).to_not have_key('roles')
+    it 'should have roles' do
+      expect(to_hash['roles']).to eq([{'name' => role_name}])
     end
   end
 end
