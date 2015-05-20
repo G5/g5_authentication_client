@@ -1,3 +1,10 @@
+## v0.4.0 (2015-05-20)
+
+* Add `G5AuthenticationClient::Client#list_roles`, a new
+  `G5AuthenticationClient::Role` model, and support for retrieving/updating
+  roles in the user data
+  ([#23](https://github.com/G5/g5_authentication_client/pull/23))
+
 ## v0.3.0 (2015-01-08)
 
 * Add `G5AuthenticationClient::Client#list_users`
@@ -14,7 +21,7 @@
 ## v0.1.5 (2014-03-07)
 
 * Add `allow_password_credentials` flag to determine whether client instances
-* will allow use of username/passwored attributes
+  will allow use of username/passwored attributes
 
 ## v0.1.4 (2014-03-06)
 
