@@ -1,4 +1,5 @@
 require 'modelish'
+require 'g5_authentication_client/role'
 
 module G5AuthenticationClient
 
@@ -50,10 +51,16 @@ module G5AuthenticationClient
     #   The user's phone number.  Not required to create a user.
     property :phone_number, type: String
 
+    # @!attribute [rw] roles
+    #   @return [Array<G5AuthenticationClient::Role>]
+    #   The user's roles. Not required to create a user.
+    property :roles, default: [],
+      type: proc { |val| val.map { |r| Role.new(r) } },
+      validator: proc { |val| "User roles must be valid" if val && val.detect { |r| !r.valid? } }
+
     def validate_for_create!
       validate!
       raise ArgumentError.new("Password required for new user.") unless !password.nil?
     end
-
   end
 end

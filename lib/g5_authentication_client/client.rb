@@ -176,6 +176,13 @@ module G5AuthenticationClient
       response.parsed.collect { |parsed_user| User.new(parsed_user) }
     end
 
+    # Return all user roles from the remote service
+    # @return [Array<G5AuthenticationClient::Role>]
+    def list_roles
+      response = oauth_access_token.get('/v1/roles')
+      response.parsed.collect { |parsed_role| Role.new(parsed_role) }
+    end
+
     private
 
     def user_hash(h)

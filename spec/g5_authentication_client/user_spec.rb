@@ -12,7 +12,8 @@ describe G5AuthenticationClient::User do
       last_name: last_name,
       title: title,
       organization_name: organization_name,
-      phone_number: phone_number
+      phone_number: phone_number,
+      roles: [{name: role_name}]
     }
   end
 
@@ -25,6 +26,7 @@ describe G5AuthenticationClient::User do
   let(:organization_name) { 'Things, Inc.' }
   let(:phone_number) { '8675309123' }
   let(:title) { 'Developer' }
+  let(:role_name)  { 'Editor' }
 
   context 'with default initialization' do
     let(:attributes){}
@@ -44,10 +46,13 @@ describe G5AuthenticationClient::User do
     it 'should have nil password_confirmation' do
       expect(user.password_confirmation).to be_nil
     end
+
+    it 'should have empty roles' do
+      expect(user.roles).to be_empty
+    end
   end
 
   context 'with full initialization' do
-
     it 'should have correct email' do
       expect(user.email).to eq(email)
     end
@@ -82,6 +87,14 @@ describe G5AuthenticationClient::User do
 
     it 'should have correct organization_name' do
       expect(user.organization_name).to eq(organization_name)
+    end
+
+    it 'should have the correct number of roles' do
+      expect(user.roles.size).to eq(attributes[:roles].size)
+    end
+
+    it 'should have the correct role name' do
+      expect(user.roles.first.name).to eq(role_name)
     end
   end
 
@@ -159,6 +172,22 @@ describe G5AuthenticationClient::User do
         expect { validate! }.to_not raise_error
       end
     end
+
+    context 'without roles' do
+      let(:roles) {}
+
+      it 'should not raise an error' do
+        expect { validate! }.to_not raise_error
+      end
+    end
+
+    context 'with invalid roles' do
+      let(:role_name) {}
+
+      it 'should raise an error' do
+        expect { validate! }.to raise_error
+      end
+    end
   end
 
   describe '#validate_for_create!' do
@@ -211,6 +240,10 @@ describe G5AuthenticationClient::User do
 
     it 'should have an id' do
       expect(to_hash['id']).to eq(id)
+    end
+
+    it 'should have roles' do
+      expect(to_hash['roles']).to eq([{'name' => role_name}])
     end
   end
 end

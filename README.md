@@ -206,6 +206,28 @@ auth_client.sign_out_url('https://myapp.host/callback')
 # => "https://auth.g5search.com/users/sign_out?redirect_url=https%3A%2F%2Fmyapp.host%2Fcallback"
 ```
 
+### Retrieving user roles ###
+
+A user's assigned roles will be included automatically when you retrieve user
+data via `get_user` or `list_users`.
+
+To retrieve a list of all roles (to which you have access) in the G5 auth
+service:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+auth_client.list_roles
+# => [#<G5AuthenticationClient::Role id=3 name="editor">, #<G5AuthenticationClient::Role id=4 name="viewer">, ...]
+```
+
+To retrieve information about a particular role:
+
+```ruby
+auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
+auth_client.get_role(4)
+# => #<G5AuthenticationClient::Role id=4 name="viewer">
+```
+
 ## Examples ##
 
 These examples assume that you have already registered your client application
