@@ -55,8 +55,17 @@ module G5AuthenticationClient
     #   @return [Array<G5AuthenticationClient::Role>]
     #   The user's roles. Not required to create a user.
     property :roles, default: [],
-      type: proc { |val| val.map { |r| Role.new(r) } },
-      validator: proc { |val| "User roles must be valid" if val && val.detect { |r| !r.valid? } }
+      type: proc { |val|
+        val.map { |r|
+          Role.new(r)
+        }
+      },
+      validator: proc { |val|
+        "User roles must be valid" if val &&
+          val.detect { |r|
+            !r.valid?
+          }
+      }
 
     def validate_for_create!
       validate!

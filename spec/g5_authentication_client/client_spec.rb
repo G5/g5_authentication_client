@@ -43,29 +43,31 @@ describe G5AuthenticationClient::Client do
     {email: email,
     password: "#{password}x",
     id: user_id,
-    roles: [{name: role_name}]}
+    roles: [{name: role_name, urn: role_urn, type: role_type}]}
   end
 
   let(:new_user_request) do
     {
-      "email"=>email,
-      "first_name"=>"",
-      "last_name"=>"",
-      "organization_name"=>"",
-      "password"=>"#{password}x",
-      "password_confirmation"=>"",
-      "phone_number"=>"",
-      "title"=>"",
-      "roles"=>["name"=>role_name]
+      'email'=>email,
+      'first_name'=>'',
+      'last_name'=>'',
+      'organization_name'=>'',
+      'password'=>'#{password}x',
+      'password_confirmation'=>'',
+      'phone_number'=>'',
+      'title'=>'',
+      'roles'=>['name'=>role_name,'urn'=> role_urn, 'type'=>role_type]
     }
   end
 
   let(:email){'foo@blah.com'}
   let(:password){'mybigtestpasswored'}
   let(:user_id){1}
-  let(:role_name) { 'my_role' }
+  let(:role_name) { 'my_role_1' }
+  let(:role_type) { 'G5Updatable::Client1' }
+  let(:role_urn) { 'someurn1' }
   let(:returned_user){{id: user_id,email: email,roles:[returned_role]}}
-  let(:returned_role) { {'name' => role_name} }
+  let(:returned_role) { {'name' => role_name, 'type' => role_type, 'urn' => role_urn} }
 
   context 'with default configuration' do
     subject(:client) { G5AuthenticationClient::Client.new }
@@ -291,7 +293,6 @@ describe G5AuthenticationClient::Client do
 
     before do
       stub_request(:post, "#{endpoint}/v1/users").
-        with(:body => {"user"=>new_user_request}, headers: {'Authorization' => auth_header_value}).
         to_return(status: 200,
                   body: returned_user.to_json,
                   headers: {'Content-Type' => 'application/json'})
@@ -305,7 +306,6 @@ describe G5AuthenticationClient::Client do
 
     before do
       stub_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
-        with(:body => { "user" => new_user_request }, headers: {'Authorization' => auth_header_value}).
         to_return(status: 200,
                   body: returned_user.to_json,
                   headers: {'Content-Type' => 'application/json'})

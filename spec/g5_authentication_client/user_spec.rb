@@ -13,7 +13,7 @@ describe G5AuthenticationClient::User do
       title: title,
       organization_name: organization_name,
       phone_number: phone_number,
-      roles: [{name: role_name}]
+      roles: [{name: role_name, type:'G5Updatable::Client', urn:'someurn'}]
     }
   end
 
@@ -243,7 +243,7 @@ describe G5AuthenticationClient::User do
     end
 
     it 'should have roles' do
-      expect(to_hash['roles']).to eq([{'name' => role_name}])
+      expect(to_hash['roles']).to eq([{'name' => role_name, 'type'=>'G5Updatable::Client', 'urn'=>'someurn'}])
     end
   end
 end
