@@ -52,7 +52,7 @@ describe G5AuthenticationClient::Client do
       'first_name'=>'',
       'last_name'=>'',
       'organization_name'=>'',
-      'password'=>'#{password}x',
+      'password'=>"#{password}x",
       'password_confirmation'=>'',
       'phone_number'=>'',
       'title'=>'',
@@ -299,6 +299,13 @@ describe G5AuthenticationClient::Client do
     end
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+
+    it 'will have the appropriate body and Authorization header' do
+      create_user
+      expect(a_request(:post, "#{endpoint}/v1/users").
+               with(body: Faraday::NestedParamsEncoder.encode({'user'=>new_user_request}), headers: {'Authorization' => auth_header_value})).
+        to have_been_made.once
+    end
   end
 
   describe '#update_user' do
@@ -312,6 +319,13 @@ describe G5AuthenticationClient::Client do
     end
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
+
+    it 'will have the appropriate body and Authorization header' do
+      update_user
+      expect(a_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
+               with(body: Faraday::NestedParamsEncoder.encode({'user'=>new_user_request}), headers: {'Authorization' => auth_header_value})).
+        to have_been_made.once
+    end
   end
 
   describe '#find_user_by_email' do
