@@ -98,7 +98,8 @@ module G5AuthenticationClient
     def create_user(options={})
       user=User.new(options)
       user.validate_for_create!
-      response=oauth_access_token.post('/v1/users', body: user_hash(user.to_hash))
+      body = user_hash(user.to_hash)
+      response=oauth_access_token.post('/v1/users', body: body)
       User.new(response.parsed)
     end
 
