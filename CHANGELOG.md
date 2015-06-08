@@ -1,3 +1,8 @@
+## v0.5.0 (2015-06-01)
+
+* Add support for resource-scoped roles
+  ([#24](https://github.com/G5/g5_authentication_client/pull/24))
+
 ## v0.4.0 (2015-05-20)
 
 * Add `G5AuthenticationClient::Client#list_roles`, a new

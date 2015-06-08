@@ -4,7 +4,7 @@ A client library for the g5-authentication service.
 
 ## Current version ##
 
-0.4.0
+0.5.0
 
 ## Requirements ##
 
@@ -217,15 +217,9 @@ service:
 ```ruby
 auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
 auth_client.list_roles
-# => [#<G5AuthenticationClient::Role id=3 name="editor">, #<G5AuthenticationClient::Role id=4 name="viewer">, ...]
-```
-
-To retrieve information about a particular role:
-
-```ruby
-auth_client = G5AuthenticationClient::Client.new(access_token: 'my_access_token')
-auth_client.get_role(4)
-# => #<G5AuthenticationClient::Role id=4 name="viewer">
+# => [#<G5AuthenticationClient::Role name="admin" type="GLOBAL" urn=nil>,
+#     #<G5AuthenticationClient::Role name="viewer" type="G5Updatable::Client" urn="g5-c-1abc2de-custom-client">,
+#     ...]
 ```
 
 ## Examples ##
