@@ -4,7 +4,7 @@ A client library for the g5-authentication service.
 
 ## Current version ##
 
-0.5.0
+0.5.1
 
 ## Requirements ##
 

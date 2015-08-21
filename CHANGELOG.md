@@ -1,3 +1,8 @@
+## v0.5.1 (2015-08-21)
+
+* Allow user attributes to be selectively updated
+  ([#25](https://github.com/G5/g5_authentication_client/pull/25))
+
 ## v0.5.0 (2015-06-01)
 
 * Add support for resource-scoped roles
