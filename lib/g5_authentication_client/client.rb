@@ -187,7 +187,8 @@ module G5AuthenticationClient
     private
 
     def user_hash(h)
-      { user: h.reject{ |k,v| k == 'id' } }
+      user_params = h.reject { |k,v| k == 'id' || v.nil? || v.empty? }
+      { user: user_params }
     end
 
     def oauth_client

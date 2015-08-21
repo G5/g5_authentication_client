@@ -41,28 +41,40 @@ describe G5AuthenticationClient::Client do
 
   let(:new_user_options) do
     {email: email,
-    password: "#{password}x",
-    id: user_id,
-    roles: [{name: role_name, urn: role_urn, type: role_type}]}
+     password: new_password,
+     password_confirmation: new_password,
+     id: user_id,
+     first_name: first_name,
+     last_name: last_name,
+     organization_name: organization_name,
+     phone_number: phone_number,
+     title: title,
+     roles: [{name: role_name, urn: role_urn, type: role_type}]}
   end
 
   let(:new_user_request) do
     {
-      'email'=>email,
-      'first_name'=>'',
-      'last_name'=>'',
-      'organization_name'=>'',
-      'password'=>"#{password}x",
-      'password_confirmation'=>'',
-      'phone_number'=>'',
-      'title'=>'',
-      'roles'=>['name'=>role_name,'urn'=> role_urn, 'type'=>role_type]
+      'email' => email,
+      'first_name' => first_name,
+      'last_name'=> last_name,
+      'organization_name' => organization_name,
+      'password' => new_password,
+      'password_confirmation' => new_password,
+      'phone_number' => phone_number,
+      'title' => title,
+      'roles' => [{'name' => role_name, 'urn'=> role_urn, 'type' => role_type}]
     }
   end
 
-  let(:email){'foo@blah.com'}
-  let(:password){'mybigtestpasswored'}
-  let(:user_id){1}
+  let(:email) { 'foo@blah.com' }
+  let(:password) { 'mybigtestpasswored' }
+  let(:new_password) { "#{password}x" }
+  let(:user_id) { 1 }
+  let(:first_name) { 'Fred' }
+  let(:last_name) { 'Rogers' }
+  let(:organization_name) { 'The Neighborhood' }
+  let(:phone_number) { '(555) 555-5555' }
+  let(:title) { 'Neighbor' }
   let(:role_name) { 'my_role_1' }
   let(:role_type) { 'G5Updatable::Client1' }
   let(:role_urn) { 'someurn1' }
@@ -320,11 +332,33 @@ describe G5AuthenticationClient::Client do
 
     it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::User
 
-    it 'will have the appropriate body and Authorization header' do
-      update_user
-      expect(a_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
+    context 'when all user options are populated' do
+      it 'will have the appropriate body and Authorization header' do
+        update_user
+        expect(a_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
                with(body: Faraday::NestedParamsEncoder.encode({'user'=>new_user_request}), headers: {'Authorization' => auth_header_value})).
         to have_been_made.once
+      end
+    end
+
+    context 'when some user options are not populated' do
+      let(:new_user_options) do
+        {id: user_id,
+         email: email,
+         first_name: first_name}
+      end
+
+      let(:new_user_request) do
+        {'email' => email,
+         'first_name' => first_name}
+      end
+
+      it 'only sends the populated attributes and ignores the rest' do
+        update_user
+        expect(a_request(:put, /#{endpoint}\/v1\/users\/#{user_id}/).
+               with(body: Faraday::NestedParamsEncoder.encode({'user'=>new_user_request}), headers: {'Authorization' => auth_header_value})).
+               to have_been_made.once
+      end
     end
   end
 
