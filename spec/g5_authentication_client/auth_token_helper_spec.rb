@@ -7,7 +7,7 @@ describe G5AuthenticationClient::AuthTokenHelper do
   subject { TestDummy.new }
   describe '#do_with_username_pw_access_token' do
     let(:response) { double(:response, code: code) }
-    let(:token) { 'asdf' }
+    let(:token) { double(:token, token: 'asdf') }
     before do
       allow(G5AuthenticationClient::Client).to receive(:new).and_return(double(:client, username_pw_access_token: token))
     end

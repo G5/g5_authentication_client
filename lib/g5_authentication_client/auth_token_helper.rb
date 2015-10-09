@@ -11,6 +11,6 @@ module G5AuthenticationClient::AuthTokenHelper
   end
 
   def cached_username_pw_access_token
-    @cached_username_pw_access_token ||= G5AuthenticationClient::Client.new.username_pw_access_token
+    @cached_username_pw_access_token ||= G5AuthenticationClient::Client.new.username_pw_access_token.token
   end
 end
