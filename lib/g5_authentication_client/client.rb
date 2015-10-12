@@ -184,6 +184,11 @@ module G5AuthenticationClient
       response.parsed.collect { |parsed_role| Role.new(parsed_role) }
     end
 
+    def username_pw_access_token
+      raise 'allow_password_credentials must be enabled for username/pw access' unless allow_password_credentials?
+      oauth_client.password.get_token(username, password)
+    end
+
     private
 
     def user_hash(h)
@@ -201,7 +206,7 @@ module G5AuthenticationClient
       elsif authorization_code
         oauth_client.auth_code.get_token(authorization_code, redirect_uri: redirect_uri)
       elsif allow_password_credentials?
-        oauth_client.password.get_token(username,password)
+        username_pw_access_token
       else
         raise "Insufficient credentials for access token.  Supply a username/password or authentication code"
       end

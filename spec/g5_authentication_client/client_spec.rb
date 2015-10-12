@@ -127,6 +127,10 @@ describe G5AuthenticationClient::Client do
     it 'should have default allow_password_credentials' do
       expect(client.allow_password_credentials).to eq('true')
     end
+
+    it 'username_pw_access_token raises error when password credentials not enabled' do
+      expect { client.username_pw_access_token }.to raise_error('allow_password_credentials must be enabled for username/pw access')
+    end
   end
 
   context 'with non-default configuration' do
@@ -516,6 +520,25 @@ describe G5AuthenticationClient::Client do
       subject(:role) { list_roles.first }
 
       it_should_behave_like 'an oauth protected resource', G5AuthenticationClient::Role
+    end
+  end
+
+  context 'stubbed get token' do
+    let(:token) {'asdf'}
+    before do
+      oauth_client = double(OAuth2::AccessToken, password: double(:pw, get_token: token))
+      allow(client).to receive(:oauth_client).and_return(oauth_client)
+    end
+
+    describe '#username_pw_access_token' do
+      let(:returned_token) { {access_token: 'asdf'} }
+      before do
+        client.allow_password_credentials = 'true'
+      end
+
+      it 'delegates token retrieval to oauth_client' do
+        expect(client.username_pw_access_token).to eq(token)
+      end
     end
   end
 end
