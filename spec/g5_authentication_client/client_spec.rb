@@ -260,37 +260,12 @@ describe G5AuthenticationClient::Client do
 
     context 'when the allow_password_credentials is set to true' do
       let(:allow_password_credentials) {'true'}
-
-      context 'with non-nil username and password' do
-
-        it 'should be true' do
-          expect(subject).to be true
-        end
-      end
-
-      context 'when username is nil' do
-        let(:username) {}
-
-        it 'should be false' do
-          expect(subject).to be false
-        end
-      end
-
-      context 'when password is nil' do
-        let(:password) {}
-
-        it 'should be false' do
-          expect(subject).to be false
-        end
-      end
+      it { is_expected.to be true }
     end
 
     context 'when the allow_password_credentials is set to false' do
       let(:allow_password_credentials) {'false'}
-
-      it 'should be false' do
-        expect(subject).to be false
-      end
+      it { is_expected.to be false }
     end
   end
 

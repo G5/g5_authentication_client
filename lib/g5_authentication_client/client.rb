@@ -69,7 +69,7 @@ module G5AuthenticationClient
     # Tells whether a client instance will use the username/password credentials
     # @return [Boolean] whether the client will use username/password
     def allow_password_credentials?
-      allow_password_credentials=='true' && !username.nil? && !password.nil?
+      allow_password_credentials=='true'
     end
 
     # Retrieves the access token as a string
@@ -185,9 +185,9 @@ module G5AuthenticationClient
     end
 
     def username_pw_access_token
-      raise 'allow_password_credentials must be enabled for username/pw access' unless allow_password_credentials?
       raise_if_blank('username')
       raise_if_blank('password')
+      raise 'allow_password_credentials must be enabled for username/pw access' unless allow_password_credentials?
       oauth_client.password.get_token(username, password)
     end
 
