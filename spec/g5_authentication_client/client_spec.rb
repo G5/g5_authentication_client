@@ -17,7 +17,8 @@ describe G5AuthenticationClient::Client do
   let(:authorization_code){ 'code' }
   let(:allow_password_credentials){ 'false' }
 
-  let(:options) do
+  let(:options) { default_options }
+  let(:default_options) do
     {
      debug: debug,
      logger: logger,
@@ -128,9 +129,6 @@ describe G5AuthenticationClient::Client do
       expect(client.allow_password_credentials).to eq('true')
     end
 
-    it 'username_pw_access_token raises error when password credentials not enabled' do
-      expect { client.username_pw_access_token }.to raise_error('allow_password_credentials must be enabled for username/pw access')
-    end
   end
 
   context 'with non-default configuration' do
@@ -262,37 +260,12 @@ describe G5AuthenticationClient::Client do
 
     context 'when the allow_password_credentials is set to true' do
       let(:allow_password_credentials) {'true'}
-
-      context 'with non-nil username and password' do
-
-        it 'should be true' do
-          expect(subject).to be true
-        end
-      end
-
-      context 'when username is nil' do
-        let(:username) {}
-
-        it 'should be false' do
-          expect(subject).to be false
-        end
-      end
-
-      context 'when password is nil' do
-        let(:password) {}
-
-        it 'should be false' do
-          expect(subject).to be false
-        end
-      end
+      it { is_expected.to be true }
     end
 
     context 'when the allow_password_credentials is set to false' do
       let(:allow_password_credentials) {'false'}
-
-      it 'should be false' do
-        expect(subject).to be false
-      end
+      it { is_expected.to be false }
     end
   end
 
@@ -523,22 +496,33 @@ describe G5AuthenticationClient::Client do
     end
   end
 
-  context 'stubbed get token' do
+  describe '#username_pw_access_token' do
     let(:token) {'asdf'}
     before do
       oauth_client = double(OAuth2::AccessToken, password: double(:pw, get_token: token))
       allow(client).to receive(:oauth_client).and_return(oauth_client)
+      client.allow_password_credentials = 'true'
     end
 
-    describe '#username_pw_access_token' do
-      let(:returned_token) { {access_token: 'asdf'} }
-      before do
-        client.allow_password_credentials = 'true'
-      end
-
+    context 'allow_password_credentials is `true`' do
       it 'delegates token retrieval to oauth_client' do
         expect(client.username_pw_access_token).to eq(token)
       end
     end
+
+    context 'username is blank' do
+      let(:options) { default_options.merge(username: " ") }
+      it 'raises an error' do
+        expect { client.username_pw_access_token }.to raise_error(G5AuthenticationClient::Error, 'username is blank, provide a username by setting it in the client instance or adding a G5_AUTH_USERNAME env variable.')
+      end
+    end
+
+    context 'password is blank' do
+      let(:options) { default_options.merge(password: " ") }
+      it 'raises an error' do
+        expect { client.username_pw_access_token }.to raise_error(G5AuthenticationClient::Error, 'password is blank, provide a password by setting it in the client instance or adding a G5_AUTH_PASSWORD env variable.')
+      end
+    end
   end
+
 end
