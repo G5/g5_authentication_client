@@ -1,3 +1,13 @@
+## v0.5.3
+
+* `Client#username_pw_access_token`: raise error when username/password are blank
+  ([#29](https://github.com/G5/g5_authentication_client/pull/29))
+
+## v0.5.2
+
+* convenience method for access tokens
+  ([#27](https://github.com/G5/g5_authentication_client/pull/27))
+
 ## v0.5.1 (2015-08-21)
 
 * Allow user attributes to be selectively updated
