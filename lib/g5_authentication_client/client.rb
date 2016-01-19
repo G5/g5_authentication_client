@@ -186,10 +186,20 @@ module G5AuthenticationClient
 
     def username_pw_access_token
       raise 'allow_password_credentials must be enabled for username/pw access' unless allow_password_credentials?
+      raise_if_blank('username')
+      raise_if_blank('password')
       oauth_client.password.get_token(username, password)
     end
 
     private
+
+    def raise_if_blank(client_attribute)
+      attr = send(client_attribute)
+      if attr.nil? || attr.strip == ''
+        raise G5AuthenticationClient::Error.
+          new("#{client_attribute} is blank, provide a #{client_attribute} by setting it in the client instance or adding a G5_AUTH_#{client_attribute.upcase} env variable.")
+      end
+    end
 
     def user_hash(h)
       user_params = h.reject { |k,v| k == 'id' || v.nil? || v.empty? }
