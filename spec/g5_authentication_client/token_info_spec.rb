@@ -10,7 +10,8 @@ describe G5AuthenticationClient::TokenInfo do
       scopes: scopes,
       expires_in_seconds: expires_in_seconds,
       application: { uid: application_uid },
-      created_at: created_at
+      created_at: created_at,
+      extra_attribute: 'some value'
     }
   end
 
@@ -18,7 +19,7 @@ describe G5AuthenticationClient::TokenInfo do
   let(:scopes) { ['leads','calls'] }
   let(:expires_in_seconds) { '3600' }
   let(:application_uid) { 'application-uid-42' }
-	let(:created_at) { Time.now.to_i }
+  let(:created_at) { Time.now.to_i }
 
   context 'with default initialization' do
     let(:attributes) {}
@@ -42,6 +43,10 @@ describe G5AuthenticationClient::TokenInfo do
     it 'should have nil created_at' do
       expect(token.created_at).to be_nil
     end
+
+    it 'should not have extra_attribute' do
+      expect(token).to_not respond_to(:extra_attribute)
+    end
   end
 
   context 'with full initialization' do
@@ -62,7 +67,11 @@ describe G5AuthenticationClient::TokenInfo do
     end
 
     it 'should have created_at timestamp' do
-			expect(token.created_at).to eq(Time.at(created_at))
+      expect(token.created_at).to eq(Time.at(created_at))
+    end
+
+    it 'should not have extra_attribute' do
+      expect(token).to_not respond_to(:extra_attribute)
     end
   end
 end

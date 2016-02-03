@@ -3,6 +3,8 @@ require 'modelish'
 module G5AuthenticationClient
   # G5 Authentication access token info
   class TokenInfo < Modelish::Base
+    ignore_unknown_properties!
+
     # @!attribute [rw] resource_owner_id
     #   @return [String]
     #   The ID of the user that owns the resource
