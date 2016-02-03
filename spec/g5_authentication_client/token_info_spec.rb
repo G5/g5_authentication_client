@@ -9,7 +9,8 @@ describe G5AuthenticationClient::TokenInfo do
       resource_owner_id: resource_owner_id,
       scopes: scopes,
       expires_in_seconds: expires_in_seconds,
-      application: { uid: application_uid }
+      application: { uid: application_uid },
+      created_at: created_at
     }
   end
 
@@ -17,6 +18,7 @@ describe G5AuthenticationClient::TokenInfo do
   let(:scopes) { ['leads','calls'] }
   let(:expires_in_seconds) { '3600' }
   let(:application_uid) { 'application-uid-42' }
+	let(:created_at) { Time.now.to_i }
 
   context 'with default initialization' do
     let(:attributes) {}
@@ -36,6 +38,10 @@ describe G5AuthenticationClient::TokenInfo do
     it 'should have nil application_uid' do
       expect(token.application_uid).to be_nil
     end
+
+    it 'should have nil created_at' do
+      expect(token.created_at).to be_nil
+    end
   end
 
   context 'with full initialization' do
@@ -53,6 +59,10 @@ describe G5AuthenticationClient::TokenInfo do
 
     it 'should have application_uid' do
       expect(token.application_uid).to eq(application_uid)
+    end
+
+    it 'should have created_at timestamp' do
+			expect(token.created_at).to eq(Time.at(created_at))
     end
   end
 end
