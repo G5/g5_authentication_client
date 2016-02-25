@@ -3,6 +3,8 @@ require 'modelish'
 module G5AuthenticationClient
   # G5 Authentication access token info
   class TokenInfo < Modelish::Base
+    ignore_unknown_properties!
+
     # @!attribute [rw] resource_owner_id
     #   @return [String]
     #   The ID of the user that owns the resource
@@ -23,5 +25,10 @@ module G5AuthenticationClient
     #   The UID of the OAuth application that requested this token
     property :application_uid, from: :application,
                                type: lambda { |val| (val[:uid] || val['uid']).to_s }
+
+    # @!attribute [rw] created_at
+    #   @return [Time]
+    #   The token creation timestamp
+    property :created_at, type: lambda { |val| Time.at(val.to_i) }
   end
 end
