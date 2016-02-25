@@ -1,3 +1,8 @@
+## v0.5.4 (2016-02-25)
+
+* Add support for token `created_at` timestamp
+  ([#30](https://github.com/G5/g5_authentication_client/pull/30))
+
 ## v0.5.3
 
 * `Client#username_pw_access_token`: raise error when username/password are blank
