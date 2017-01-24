@@ -37,17 +37,34 @@ describe G5AuthenticationClient::AuthTokenHelper do
       end
     end
 
-    context '401' do
-      let(:code) { '401' }
+    describe 'bad responses' do
       before do
         allow(G5AuthenticationClient::Client).to receive(:new).and_return(double(:client, username_pw_access_token: token))
         call
       end
-      it 'responds with the yielded response' do
-        expect(call).to eq(response)
+
+      context '401' do
+        let(:code) { '401' }
+
+        it 'responds with the yielded response' do
+          expect(call).to eq(response)
+        end
+
+        it 'calls username_pw_access_token once' do
+          expect(G5AuthenticationClient::Client).to have_received(:new).twice
+        end
       end
-      it 'calls username_pw_access_token once' do
-        expect(G5AuthenticationClient::Client).to have_received(:new).twice
+
+      context 'nil response' do
+        let(:response) { nil }
+
+        it 'responds with the yielded response' do
+          expect(call).to eq(response)
+        end
+
+        it 'calls username_pw_access_token once' do
+          expect(G5AuthenticationClient::Client).to have_received(:new).twice
+        end
       end
     end
   end
