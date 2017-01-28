@@ -5,11 +5,11 @@ module G5AuthenticationClient::AuthTokenHelper
     begin
       response = yield cached_username_pw_access_token
     rescue RestClient::ExceptionWithResponse => e
-      if e.response.code.to_i == 401
-        @cached_username_pw_access_token = nil
-        response                         = yield cached_username_pw_access_token
-      end
-      response
+      response = e.response
+    end
+    if response.code.to_i == 401
+      @cached_username_pw_access_token = nil
+      response                         = yield cached_username_pw_access_token
     end
   end
 
