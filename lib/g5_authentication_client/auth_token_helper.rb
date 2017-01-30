@@ -11,6 +11,7 @@ module G5AuthenticationClient::AuthTokenHelper
       @cached_username_pw_access_token = nil
       response                         = yield cached_username_pw_access_token
     end
+    response
   end
 
   def cached_username_pw_access_token
