@@ -1,8 +1,6 @@
 require 'simplecov'
-SimpleCov.start 'test_frameworks'
-
 require 'codeclimate-test-reporter'
-CodeClimate::TestReporter.start
+SimpleCov.start 'test_frameworks'
 
 require 'rspec'
 

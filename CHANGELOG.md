@@ -1,3 +1,8 @@
+## v0.5.5 (2017-01-30)
+
+ * RestClient raises errors on 401.
+ ([#32](https://github.com/G5/g5_authentication_client/pull/32))
+
 ## v0.5.4 (2016-02-25)
 
 * Add support for token `created_at` timestamp
