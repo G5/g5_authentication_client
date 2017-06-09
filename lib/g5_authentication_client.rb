@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'oauth2'
 require 'g5_authentication_client/version'
 require 'g5_authentication_client/configuration'

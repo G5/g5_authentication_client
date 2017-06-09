@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'modelish'
 
 module G5AuthenticationClient
@@ -26,6 +28,5 @@ module G5AuthenticationClient
       validate!
       raise ArgumentError.new("URN required when type != '#{GLOBAL}'") if urn.nil? && type != GLOBAL
     end
-
   end
 end

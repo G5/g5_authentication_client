@@ -1,3 +1,7 @@
+## v1.0.0.pre.2 (2017-06-09)
+
+* Enhancement: opt in to immutable string literals for ruby >= 2.3
+
 ## v1.0.0.pre.1 (2017-06-08)
 
 * **Backwards incompatible changes**

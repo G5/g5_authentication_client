@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'modelish'
 require 'g5_authentication_client/role'
 

@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 module G5AuthenticationClient::AuthTokenHelper
   # Return response to 'yield'
   # Yield response should have a 'code' method for the http status code
