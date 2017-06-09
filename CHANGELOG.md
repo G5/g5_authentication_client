@@ -1,3 +1,11 @@
+## v1.0.0.pre.1 (2017-06-08)
+
+* **Backwards incompatible changes**
+  * Drop support for ruby 1.9.3
+* Enhancements
+  * Upgrade modelish to ensure compatibility with ruby 2.4 and
+  rails 5.x
+
 ## v0.5.5 (2017-01-30)
 
  * RestClient raises errors on 401.
