@@ -8,7 +8,7 @@ A client library for the g5-authentication service.
 
 ## Requirements ##
 
-* Ruby >= 1.9.3
+* Ruby >= 2.2.2
 
 ## Installation ##
 

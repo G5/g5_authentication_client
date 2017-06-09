@@ -1,7 +1,7 @@
 ## v1.0.0.pre.1 (2017-06-08)
 
 * **Backwards incompatible changes**
-  * Drop support for ruby 1.9.3
+  * Drop support for ruby < 2.2
 * Enhancements
   * Upgrade modelish to ensure compatibility with ruby 2.4 and
   rails 5.x
