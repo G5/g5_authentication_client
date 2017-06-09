@@ -1,13 +1,14 @@
+# frozen_string_literal: false
+
 require 'spec_helper'
 
 describe G5AuthenticationClient::Role do
   subject(:role) { G5AuthenticationClient::Role.new(attributes) }
 
-  let(:attributes) do {
-    name: name,
-    type: type,
-    urn: urn,
-  }
+  let(:attributes) do
+    { name: name,
+      type: type,
+      urn: urn }
   end
 
   let(:name) { 'awesome_role' }
@@ -41,7 +42,7 @@ describe G5AuthenticationClient::Role do
   end
 
   context 'when attributes include unknown properties' do
-    let(:attributes) { {name: name, resource: 'Application'} }
+    let(:attributes) { { name: name, resource: 'Application' } }
 
     it 'should not raise an error' do
       expect { role }.to_not raise_error
@@ -69,28 +70,27 @@ describe G5AuthenticationClient::Role do
       let(:name) {}
 
       it 'should raise an error' do
-        expect { validate! }.to raise_error
+        expect { validate! }.to raise_error(ArgumentError,
+                                            'name must not be nil or blank')
       end
     end
   end
 
   describe '#validate_for_create!' do
-    subject(:validate_for_create) {role.validate_for_create!}
+    subject(:validate_for_create) { role.validate_for_create! }
 
     context 'when type not GLOBAL and no urn' do
-
       let(:type) { 'not_global' }
-      let(:urn) {  }
+      let(:urn) {}
 
       it 'will raise an error' do
-        expect { validate_for_create }.to raise_error
+        expect { validate_for_create }.to raise_error(ArgumentError)
       end
     end
 
     context 'when type GLOBAL and no urn' do
-
       let(:type) { 'GLOBAL' }
-      let(:urn) {  }
+      let(:urn) {}
 
       it 'will raise an error' do
         expect { validate_for_create }.to_not raise_error
@@ -98,7 +98,6 @@ describe G5AuthenticationClient::Role do
     end
 
     context 'when type not GLOBAL and existing urn' do
-
       let(:type) { 'NOT_GLOBAL' }
       let(:urn) { 'some_urn' }
 
@@ -106,7 +105,6 @@ describe G5AuthenticationClient::Role do
         expect { validate_for_create }.to_not raise_error
       end
     end
-
   end
 
   describe '#to_hash' do
