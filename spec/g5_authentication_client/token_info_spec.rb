@@ -18,7 +18,7 @@ describe G5AuthenticationClient::TokenInfo do
   end
 
   let(:resource_owner_id) { 42 }
-  let(:scopes) { ['leads','calls'] }
+  let(:scopes) { %w[leads calls] }
   let(:expires_in_seconds) { '3600' }
   let(:application_uid) { 'application-uid-42' }
   let(:created_at) { Time.now.to_i }
@@ -26,54 +26,32 @@ describe G5AuthenticationClient::TokenInfo do
   context 'with default initialization' do
     let(:attributes) {}
 
-    it 'should have nil resource_owner_id' do
-      expect(token.resource_owner_id).to be_nil
-    end
-
-    it 'should have nil scopes' do
-      expect(token.scopes).to be_empty
-    end
-
-    it 'should have nil expires_in_seconds' do
-      expect(token.expires_in_seconds).to be_nil
-    end
-
-    it 'should have nil application_uid' do
-      expect(token.application_uid).to be_nil
-    end
-
-    it 'should have nil created_at' do
-      expect(token.created_at).to be_nil
-    end
-
-    it 'should not have extra_attribute' do
-      expect(token).to_not respond_to(:extra_attribute)
-    end
+    its(:resource_owner_id) { is_expected.to be_nil }
+    its(:scopes) { are_expected.to be_empty }
+    its(:expires_in_seconds) { is_expected.to be_nil }
+    its(:application_uid) { is_expected.to be_nil }
+    its(:created_at) { is_expected.to be_nil }
+    it { is_expected.to_not respond_to(:extra_attributes) }
   end
 
   context 'with full initialization' do
-    it 'should have resource_owner_id' do
-      expect(token.resource_owner_id).to eq(resource_owner_id.to_s)
+    its(:resource_owner_id) { is_expected.to eq(resource_owner_id.to_s) }
+    its(:scopes) { are_expected.to eq(scopes) }
+    its(:expires_in_seconds) { is_expected.to eq(expires_in_seconds.to_i) }
+    its(:application_uid) { is_expected.to eq(application_uid) }
+    its(:created_at) { is_expected.to eq(Time.at(created_at)) }
+    it { is_expected.to_not respond_to(:extra_attribute) }
+  end
+
+  context 'with string key initialization' do
+    let(:attributes) do
+      {
+        'resource_owner_id' => resource_owner_id,
+        'application_uid' => application_uid
+      }
     end
 
-    it 'should have scopes' do
-      expect(token.scopes).to eq(scopes)
-    end
-
-    it 'should have expires_in_seconds' do
-      expect(token.expires_in_seconds).to eq(expires_in_seconds.to_i)
-    end
-
-    it 'should have application_uid' do
-      expect(token.application_uid).to eq(application_uid)
-    end
-
-    it 'should have created_at timestamp' do
-      expect(token.created_at).to eq(Time.at(created_at))
-    end
-
-    it 'should not have extra_attribute' do
-      expect(token).to_not respond_to(:extra_attribute)
-    end
+    its(:resource_owner_id) { is_expected.to eq(resource_owner_id.to_s) }
+    its(:application_uid) { is_expected.to eq(application_uid) }
   end
 end

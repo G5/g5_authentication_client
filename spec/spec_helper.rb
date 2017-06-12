@@ -4,7 +4,7 @@ require 'simplecov'
 SimpleCov.start 'test_frameworks'
 
 require 'rspec'
-
+require 'rspec/its'
 require 'webmock/rspec'
 require 'fakefs/spec_helpers'
 
