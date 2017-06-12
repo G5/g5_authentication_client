@@ -1,3 +1,7 @@
+## v1.0.0.pre.3 (2017-06-10)
+
+* Bug fix: upgrade modelish to pick up fixes for hashie 3.x
+
 ## v1.0.0.pre.2 (2017-06-09)
 
 * Enhancement: opt in to immutable string literals for ruby >= 2.3
