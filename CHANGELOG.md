@@ -1,3 +1,7 @@
+## v1.0.0.pre.4 (2017-06-14)
+
+* Bug fix: more modelish fixes
+
 ## v1.0.0.pre.3 (2017-06-10)
 
 * Bug fix: upgrade modelish to pick up fixes for hashie 3.x
