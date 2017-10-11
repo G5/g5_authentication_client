@@ -4,11 +4,11 @@ A client library for the g5-authentication service.
 
 ## Current version ##
 
-1.0.0
+1.0.1.pre.1
 
 ## Requirements ##
 
-* Ruby >= 2.2
+* Ruby >= 1.9.3
 
 ## Installation ##
 
