@@ -1,22 +1,14 @@
-## v1.0.0.pre.4 (2017-06-14)
-
-* Bug fix: more modelish fixes
-
-## v1.0.0.pre.3 (2017-06-10)
-
-* Bug fix: upgrade modelish to pick up fixes for hashie 3.x
-
-## v1.0.0.pre.2 (2017-06-09)
-
-* Enhancement: opt in to immutable string literals for ruby >= 2.3
-
-## v1.0.0.pre.1 (2017-06-08)
+## v1.0.0 (2017-10-18)
 
 * **Backwards incompatible changes**
   * Drop support for ruby < 2.2
 * Enhancements
   * Upgrade modelish to ensure compatibility with ruby 2.4 and
   rails 5.x
+  * opt in to immutable string literals for ruby >= 2.3
+* Fixes
+  * force modelish upgrade to pick up fixes for hashie 3.x
+* See [#33](https://github.com/G5/g5_authentication_client/pull/33)
 
 ## v0.5.5 (2017-01-30)
 
