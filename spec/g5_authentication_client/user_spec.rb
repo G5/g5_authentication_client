@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 require 'spec_helper'
 
 describe G5AuthenticationClient::User do
@@ -13,23 +15,24 @@ describe G5AuthenticationClient::User do
       title: title,
       organization_name: organization_name,
       phone_number: phone_number,
-      roles: [{name: role_name, type:'G5Updatable::Client', urn:'someurn'}]
-    }
+      roles: [{ name: role_name,
+                type: 'G5Updatable::Client',
+                urn: 'someurn' }] }
   end
 
   let(:email) { 'foo@blah.com' }
   let(:password) { 'foobarbaz' }
   let(:password_confirmation) { 'notamatch' }
-  let(:id) {1}
+  let(:id) { 1 }
   let(:first_name) { 'Joe' }
   let(:last_name) { 'Person' }
   let(:organization_name) { 'Things, Inc.' }
   let(:phone_number) { '8675309123' }
   let(:title) { 'Developer' }
-  let(:role_name)  { 'Editor' }
+  let(:role_name) { 'Editor' }
 
   context 'with default initialization' do
-    let(:attributes){}
+    let(:attributes) {}
 
     it 'should have nil email' do
       expect(user.email).to be_nil
@@ -102,15 +105,18 @@ describe G5AuthenticationClient::User do
     subject(:validate!) { user.validate! }
 
     context 'without email' do
-      let(:email){}
+      let(:email) {}
 
       it 'should raise an error' do
-        expect { validate! }.to raise_error
+        expect { validate! }.to raise_error(
+          ArgumentError,
+          'email must not be nil or blank'
+        )
       end
     end
 
     context 'without password' do
-      let(:password){}
+      let(:password) {}
 
       it 'should not raise an error' do
         expect { validate! }.to_not raise_error
@@ -118,7 +124,7 @@ describe G5AuthenticationClient::User do
     end
 
     context 'without id' do
-      let(:id){}
+      let(:id) {}
 
       it 'should not raise an error' do
         expect { validate! }.to_not raise_error
@@ -185,28 +191,35 @@ describe G5AuthenticationClient::User do
       let(:role_name) {}
 
       it 'should raise an error' do
-        expect { validate! }.to raise_error
+        expect { validate! }.to raise_error(ArgumentError,
+                                            'User roles must be valid')
       end
     end
   end
 
   describe '#validate_for_create!' do
-    subject(:validate_for_create) {user.validate_for_create!}
+    subject(:validate_for_create) { user.validate_for_create! }
 
     context 'without a password' do
-      let(:password){}
+      let(:password) {}
 
       it 'should be invalid' do
-        expect { validate_for_create }.to raise_error
+        expect { validate_for_create }.to raise_error(
+          ArgumentError,
+          'Password required for new user.'
+        )
       end
     end
 
     context 'without an email' do
-      let(:email){}
-      let(:password){'foo'}
+      let(:email) {}
+      let(:password) { 'foo' }
 
       it 'should be invalid' do
-        expect { validate_for_create }.to raise_error
+        expect { validate_for_create }.to raise_error(
+          ArgumentError,
+          'email must not be nil or blank'
+        )
       end
     end
   end
@@ -243,7 +256,11 @@ describe G5AuthenticationClient::User do
     end
 
     it 'should have roles' do
-      expect(to_hash['roles']).to eq([{'name' => role_name, 'type'=>'G5Updatable::Client', 'urn'=>'someurn'}])
+      expect(to_hash['roles']).to eq(
+        [{ 'name' => role_name,
+           'type' => 'G5Updatable::Client',
+           'urn' => 'someurn' }]
+      )
     end
   end
 end

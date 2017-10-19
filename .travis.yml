@@ -1,6 +1,17 @@
 language: ruby
 rvm:
-  - 2.2.6
-  - 2.3.3
+  - 2.2
+  - 2.3
+  - 2.4
+dist: trusty
+sudo: false
+cache:
+  bundler: true
 script:
   - bundle exec rspec spec
+after_script:
+  - bundle exec codeclimate-test-reporter
+addons:
+  code_climate:
+    repo_token:
+      secure: "o57YVn0CkxJwlVfYv2faFKT3sF3Xlio21piMFhNu828lkWxmnHREKt89UioQSVtAJWRkAC9dQL24YdsItNEunxozPQ/appw6UfJTNTDP8HrUg3rQjdimryzKFFr731ztpHs12q+PgbRt+WXIl/PW8w6haHf6m6pEsDkt364z8So="

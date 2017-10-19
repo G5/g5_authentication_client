@@ -1,3 +1,15 @@
+## v1.0.0 (2017-10-18)
+
+* **Backwards incompatible changes**
+  * Drop support for ruby < 2.2
+* Enhancements
+  * Upgrade modelish to ensure compatibility with ruby 2.4 and
+  rails 5.x
+  * opt in to immutable string literals for ruby >= 2.3
+* Fixes
+  * force modelish upgrade to pick up fixes for hashie 3.x
+* See [#33](https://github.com/G5/g5_authentication_client/pull/33)
+
 ## v0.5.5 (2017-01-30)
 
  * RestClient raises errors on 401.
