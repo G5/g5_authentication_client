@@ -1,6 +1,7 @@
 ## v1.0.1 (2018-01-22)
 
-* Removing RestClient dependency
+ * Removing RestClient dependency
+ * [#35](https://github.com/G5/g5_authentication_client/pull/35)
 
 ## v1.0.0 (2017-10-18)
 
