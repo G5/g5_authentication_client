@@ -1,3 +1,7 @@
+## v1.0.1 (2018-01-22)
+
+* Removing RestClient dependency
+
 ## v1.0.0 (2017-10-18)
 
 * **Backwards incompatible changes**
