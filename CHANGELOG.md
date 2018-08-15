@@ -1,3 +1,8 @@
+## v1.0.1.pre.1 (2017-11-02)
+
+* Reintroduce support for ruby >= 1.9.3
+  ([#34](https://github.com/G5/g5_authentication_client/pull/34))
+
 ## v1.0.0 (2017-10-18)
 
 * **Backwards incompatible changes**
