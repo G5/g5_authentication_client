@@ -20,6 +20,8 @@ Gem::Specification.new do |s|
   s.require_paths = ['lib']
 
   s.add_dependency('modelish')
+  s.add_dependency('hashie', '< 3.6.0')
+
   s.add_dependency('configlet', '~> 2.1')
   s.add_dependency('oauth2')
   s.add_dependency('addressable')
